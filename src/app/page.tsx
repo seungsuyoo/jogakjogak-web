@@ -2,6 +2,7 @@
 
 import styles from "./page.module.css";
 import Image from "next/image";
+import logo from "@/assets/images/logo.svg";
 import section1 from "@/assets/images/section1.png";
 import section2 from "@/assets/images/section2.png";
 import section3 from "@/assets/images/section3.png";
@@ -9,6 +10,18 @@ import section3 from "@/assets/images/section3.png";
 export default function Home() {
   return (
     <div className={styles.container}>
+      <div className={styles.logo}>
+        <Image 
+          src={logo} 
+          alt="조각조각 로고" 
+          width={127.82} 
+          height={25.11}
+          priority
+        />
+      </div>
+      <button className={styles.loginButton}>
+        <span>로그인</span>
+      </button>
       <div className={styles.backgroundPattern}>
         <div className={styles.blueGradientContainer}>
           <div className={styles.blueCircle1}></div>

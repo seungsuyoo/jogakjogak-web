@@ -8,6 +8,51 @@
   background: #FFFFFF;
 }
 
+.logo {
+  position: absolute;
+  top: 18.44px;
+  left: 38.2px;
+  z-index: 2;
+}
+
+.logo img {
+  width: 127.82px;
+  height: 25.11px;
+}
+
+.loginButton {
+  position: absolute;
+  top: 8px;
+  right: 32px;
+  width: 105px;
+  height: 48px;
+  padding: 12px 30px;
+  background: #3483FA;
+  border: none;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  z-index: 2;
+  transition: background-color 0.2s ease;
+}
+
+.loginButton span {
+  text-align: center;
+  color: #F5F8FC;
+  font-size: 17px;
+  font-family: Pretendard;
+  font-weight: 700;
+  line-height: 24px;
+  word-wrap: break-word;
+}
+
+.loginButton:hover {
+  background: #2A73EA;
+}
+
 .backgroundPattern {
   position: absolute;
   top: 0;
@@ -88,6 +133,32 @@
 }
 
 @media (max-width: 768px) {
+  .container {
+    padding-top: 150px;
+  }
+  
+  .logo {
+    top: 17.96px;
+    left: 13.09px;
+  }
+  
+  .logo img {
+    width: 81.81px;
+    height: 16.07px;
+  }
+  
+  .loginButton {
+    right: 12px;
+    width: 88px;
+    height: 36px;
+    padding: 6px 16px;
+  }
+  
+  .loginButton span {
+    font-size: 15px;
+    line-height: 20px;
+  }
+  
   .blueGradientContainer {
     width: 837px;
     height: 805px;
