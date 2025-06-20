@@ -243,9 +243,11 @@
 .imagePlaceholder {
   position: relative;
   width: 507px;
-  height: 440px;
-  background: #F9F9F9;
-  border-radius: 24px;
+  height: 471px;
+  background: #EAF2FE;
+  border-radius: 48px;
+  outline: 2px #EAF2FE solid;
+  outline-offset: -2px;
   flex-shrink: 0;
   overflow: hidden;
 }
@@ -304,7 +306,7 @@
     width: 100%;
     max-width: 507px;
     height: auto;
-    aspect-ratio: 507 / 440;
+    aspect-ratio: 507 / 471;
   }
   
   .featureTitle {
