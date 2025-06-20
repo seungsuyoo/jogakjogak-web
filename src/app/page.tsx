@@ -37,9 +37,9 @@ export default function Home() {
           </div>
           <div className={styles.featureText}>
             <h2 className={styles.featureTitle}>
-              채용공고에 맞춰, AI가
+              이력서와 채용 공고로
               <br />
-              지금 해야 할 일을 알려줘요
+              지금 할 일을 알 수 있어요.
             </h2>
             <p className={styles.featureDescription}>
               동록한 이력서와 관심 채용 공고를 비교 분석해,
