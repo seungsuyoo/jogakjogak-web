@@ -11,16 +11,6 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Header backgroundColor="transparent" />
-      <div className={styles.backgroundPattern}>
-        <div className={styles.blueGradientContainer}>
-          <div className={styles.blueCircle1}></div>
-          <div className={styles.blueCircle2}></div>
-        </div>
-        <div className={styles.orangeGradientContainer}>
-          <div className={styles.orangeCircle1}></div>
-          <div className={styles.orangeCircle2}></div>
-        </div>
-      </div>
       
       <main className={styles.main}>
         <div className={styles.badge}>
