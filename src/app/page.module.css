@@ -124,10 +124,7 @@
   position: relative;
   width: 507px;
   height: 471px;
-  background: #EAF2FE;
   border-radius: 48px;
-  outline: 2px #EAF2FE solid;
-  outline-offset: -2px;
   flex-shrink: 0;
   overflow: hidden;
 }
