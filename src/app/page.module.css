@@ -8,7 +8,7 @@
   background: var(--n-0);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1032px) {
   .container {
     padding-top: 96px; /* 64px header + 32px spacing */
   }

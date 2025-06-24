@@ -144,7 +144,7 @@
 }
 
 /* Mobile styles */
-@media (max-width: 768px) {
+@media (max-width: 1032px) {
   .container {
     height: 330px;
     flex-direction: column;
