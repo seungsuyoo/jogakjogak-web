@@ -1,0 +1,124 @@
+.hero {
+  text-align: center;
+  padding: 0 20px;
+  margin-bottom: 104px;
+  position: relative;
+  z-index: 1;
+}
+
+.badge {
+  display: inline-flex;
+  padding: 8px 24px;
+  background: var(--primarymain-200);
+  box-shadow: 0px 2px 8px rgba(52, 131, 250, 0.12);
+  border-radius: 10px;
+  outline: 1px var(--primarymain-300) solid;
+  outline-offset: -1px;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.badge span {
+  text-align: center;
+  color: var(--primarymain-800);
+  font-family: var(--body-1-normal-bold-font-family);
+  font-size: var(--body-1-normal-bold-font-size);
+  font-weight: var(--body-1-normal-bold-font-weight);
+  line-height: var(--body-1-normal-bold-line-height);
+  letter-spacing: var(--body-1-normal-bold-letter-spacing);
+  word-wrap: break-word;
+}
+
+.title {
+  font-family: var(--display-1-bold-font-family);
+  font-weight: var(--display-1-bold-font-weight);
+  font-size: var(--display-1-bold-font-size);
+  line-height: var(--display-1-bold-line-height);
+  letter-spacing: var(--display-1-bold-letter-spacing);
+  text-align: center;
+  color: var(--n-900);
+  margin-bottom: 24px;
+}
+
+.description {
+  font-family: var(--heading-1-medium-font-family);
+  font-weight: var(--heading-1-medium-font-weight);
+  font-size: var(--heading-1-medium-font-size);
+  line-height: var(--heading-1-medium-line-height);
+  letter-spacing: var(--heading-1-medium-letter-spacing);
+  text-align: center;
+  color: var(--n-700);
+  margin-bottom: 32px;
+}
+
+.ctaButton {
+  background: var(--primarymain-700);
+  font-family: var(--headline-1-bold-font-family);
+  font-weight: var(--headline-1-bold-font-weight);
+  font-size: var(--headline-1-bold-font-size);
+  line-height: var(--headline-1-bold-line-height);
+  letter-spacing: var(--headline-1-bold-letter-spacing);
+  color: var(--n-100);
+  border: none;
+  border-radius: 16px;
+  padding: 20px 32px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.ctaButton:hover {
+  background: var(--primarymain-800);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    margin-bottom: 64px;
+  }
+  
+  .badge {
+    margin-bottom: 16px;
+    padding: 8px 12px;
+  }
+  
+  .badge span {
+    font-family: var(--label-2-bold-font-family);
+    font-size: var(--label-2-bold-font-size);
+    font-weight: var(--label-2-bold-font-weight);
+    letter-spacing: var(--label-2-bold-letter-spacing);
+    line-height: var(--label-2-bold-line-height);
+  }
+  
+  .title {
+    font-size: var(--title-2-bold-font-size);
+    line-height: var(--title-2-bold-line-height);
+    letter-spacing: var(--title-2-bold-letter-spacing);
+    margin-bottom: 16px;
+  }
+  
+  .description {
+    font-family: var(--body-1-reading-medium-font-family);
+    font-size: var(--body-1-reading-medium-font-size);
+    font-weight: var(--body-1-reading-medium-font-weight);
+    line-height: var(--body-1-reading-medium-line-height);
+    letter-spacing: var(--body-1-reading-medium-letter-spacing);
+    margin-bottom: 16px;
+  }
+  
+  .ctaButton {
+    width: 167px;
+    height: 48px;
+    padding: 0;
+    font-family: var(--body-1-normal-bold-font-family);
+    font-size: var(--body-1-normal-bold-font-size);
+    font-weight: var(--body-1-normal-bold-font-weight);
+    line-height: var(--body-1-normal-bold-line-height);
+    letter-spacing: var(--body-1-normal-bold-letter-spacing);
+  }
+}

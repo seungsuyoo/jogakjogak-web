@@ -1,0 +1,99 @@
+.featureSection {
+  width: 100%;
+  padding: 48px 16px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.featureSection + .featureSection {
+  margin-top: 32px;
+}
+
+.featureContent {
+  display: flex;
+  align-items: center;
+  gap: 68px;
+}
+
+.reversed {
+  flex-direction: row-reverse;
+}
+
+.imagePlaceholder {
+  position: relative;
+  width: 507px;
+  height: 471px;
+  border-radius: 48px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.featureText {
+  flex: 1;
+}
+
+.featureTitle {
+  font-family: var(--display-2-bold-font-family);
+  font-weight: var(--display-2-bold-font-weight);
+  font-size: var(--display-2-bold-font-size);
+  line-height: var(--display-2-bold-line-height);
+  letter-spacing: var(--display-2-bold-letter-spacing);
+  color: var(--n-900);
+  margin-bottom: 32px;
+}
+
+.featureDescription {
+  font-family: var(--headline-1-regular-font-family);
+  font-weight: var(--headline-1-regular-font-weight);
+  font-size: var(--headline-1-regular-font-size);
+  line-height: var(--headline-1-regular-line-height);
+  letter-spacing: var(--headline-1-regular-letter-spacing);
+  color: var(--n-800);
+}
+
+@media (max-width: 768px) {
+  .featureSection {
+    padding: 0 16px 32px 16px;
+  }
+  
+  .featureSection + .featureSection {
+    margin-top: 48px;
+  }
+  
+  .featureContent {
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+  }
+  
+  .featureContent.reversed {
+    flex-direction: column;
+  }
+  
+  .imagePlaceholder {
+    width: calc(100vw - 32px);
+    height: calc((100vw - 32px) * 471 / 507);
+  }
+  
+  .featureText {
+    width: auto;
+  }
+  
+  .featureTitle {
+    font-size: var(--title-3-bold-font-size);
+    line-height: var(--title-3-bold-line-height);
+    text-align: left;
+    margin-bottom: 16px;
+  }
+  
+  .featureDescription {
+    font-family: var(--body-2-reading-regular-font-family);
+    font-size: var(--body-2-reading-regular-font-size);
+    font-weight: var(--body-2-reading-regular-font-weight);
+    line-height: var(--body-2-reading-regular-line-height);
+    letter-spacing: var(--body-2-reading-regular-letter-spacing);
+    text-align: left;
+  }
+}
