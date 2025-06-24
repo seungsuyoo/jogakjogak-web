@@ -5,7 +5,7 @@
   align-items: center;
   padding-top: 144px; /* 64px header + 80px spacing */
   position: relative;
-  background: #FFFFFF;
+  background: var(--n-0);
 }
 
 
@@ -18,7 +18,7 @@
 .main {
   text-align: center;
   padding: 0 20px;
-  margin-bottom: 131px;
+  margin-bottom: 104px;
   position: relative;
   z-index: 1;
 }
@@ -26,10 +26,10 @@
 .badge {
   display: inline-flex;
   padding: 8px 24px;
-  background: #EAF2FE;
+  background: var(--primarymain-200);
   box-shadow: 0px 2px 8px rgba(52, 131, 250, 0.12);
   border-radius: 10px;
-  outline: 1px #AEC9FF solid;
+  outline: 1px var(--primarymain-300) solid;
   outline-offset: -1px;
   justify-content: center;
   align-items: center;
@@ -39,45 +39,45 @@
 
 .badge span {
   text-align: center;
-  color: #2A69C8;
-  font-size: 16px;
-  font-family: Pretendard;
-  font-weight: 700;
-  line-height: 24px;
-  letter-spacing: 0.09px;
+  color: var(--primarymain-800);
+  font-family: var(--body-1-normal-bold-font-family);
+  font-size: var(--body-1-normal-bold-font-size);
+  font-weight: var(--body-1-normal-bold-font-weight);
+  line-height: var(--body-1-normal-bold-line-height);
+  letter-spacing: var(--body-1-normal-bold-letter-spacing);
   word-wrap: break-word;
 }
 
 .title {
-  font-family: Pretendard;
-  font-weight: 700;
-  font-size: 56px;
-  line-height: 72.02px;
-  letter-spacing: 0%;
+  font-family: var(--display-1-bold-font-family);
+  font-weight: var(--display-1-bold-font-weight);
+  font-size: var(--display-1-bold-font-size);
+  line-height: var(--display-1-bold-line-height);
+  letter-spacing: var(--display-1-bold-letter-spacing);
   text-align: center;
-  color: #2F2F2F;
+  color: var(--n-900);
   margin-bottom: 24px;
 }
 
 .description {
-  font-family: Pretendard;
-  font-weight: 500;
-  font-size: 22px;
-  line-height: 30.01px;
-  letter-spacing: 0%;
+  font-family: var(--heading-1-medium-font-family);
+  font-weight: var(--heading-1-medium-font-weight);
+  font-size: var(--heading-1-medium-font-size);
+  line-height: var(--heading-1-medium-line-height);
+  letter-spacing: var(--heading-1-medium-letter-spacing);
   text-align: center;
-  color: #728294;
+  color: var(--n-700);
   margin-bottom: 32px;
 }
 
 .ctaButton {
-  background: #3483FA;
-  font-family: Pretendard;
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 26.01px;
-  letter-spacing: 0%;
-  color: #F5F8FC;
+  background: var(--primarymain-700);
+  font-family: var(--headline-1-bold-font-family);
+  font-weight: var(--headline-1-bold-font-weight);
+  font-size: var(--headline-1-bold-font-size);
+  line-height: var(--headline-1-bold-line-height);
+  letter-spacing: var(--headline-1-bold-letter-spacing);
+  color: var(--n-100);
   border: none;
   border-radius: 16px;
   padding: 20px 32px;
@@ -91,12 +91,12 @@
 }
 
 .ctaButton:hover {
-  background: #2A73EA;
+  background: var(--primarymain-800);
 }
 
 .featureSection {
   width: 100%;
-  padding: 60px 30px;
+  padding: 48px 16px;
   display: flex;
   justify-content: center;
   position: relative;
@@ -108,12 +108,9 @@
 }
 
 .featureContent {
-  max-width: 1200px;
-  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 86px;
+  gap: 68px;
 }
 
 .reversed {
@@ -134,45 +131,81 @@
 }
 
 .featureTitle {
-  font-family: Pretendard;
-  font-weight: 600;
-  font-size: 40px;
-  line-height: 52px;
-  color: #2F2F2F;
-  margin-bottom: 28px;
+  font-family: var(--display-2-bold-font-family);
+  font-weight: var(--display-2-bold-font-weight);
+  font-size: var(--display-2-bold-font-size);
+  line-height: var(--display-2-bold-line-height);
+  letter-spacing: var(--display-2-bold-letter-spacing);
+  color: var(--n-900);
+  margin-bottom: 32px;
 }
 
 .featureDescription {
-  font-family: Pretendard;
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 153%;
-  letter-spacing: -0.02em;
-  color: #4B4B4B;
+  font-family: var(--headline-1-regular-font-family);
+  font-weight: var(--headline-1-regular-font-weight);
+  font-size: var(--headline-1-regular-font-size);
+  line-height: var(--headline-1-regular-line-height);
+  letter-spacing: var(--headline-1-regular-letter-spacing);
+  color: var(--n-800);
 }
 
 @media (max-width: 768px) {
+  .main {
+    margin-bottom: 64px;
+  }
+  
+  .badge {
+    margin-bottom: 16px;
+    padding: 8px 12px;
+  }
+  
+  .badge span {
+    font-family: var(--label-2-bold-font-family);
+    font-size: var(--label-2-bold-font-size);
+    font-weight: var(--label-2-bold-font-weight);
+    letter-spacing: var(--label-2-bold-letter-spacing);
+    line-height: var(--label-2-bold-line-height);
+  }
+  
   .title {
-    font-size: 40px;
-    line-height: 52px;
+    font-size: var(--title-2-bold-font-size);
+    line-height: var(--title-2-bold-line-height);
+    letter-spacing: var(--title-2-bold-letter-spacing);
+    margin-bottom: 16px;
   }
   
   .description {
-    font-size: 18px;
-    line-height: 24px;
+    font-family: var(--body-1-reading-medium-font-family);
+    font-size: var(--body-1-reading-medium-font-size);
+    font-weight: var(--body-1-reading-medium-font-weight);
+    line-height: var(--body-1-reading-medium-line-height);
+    letter-spacing: var(--body-1-reading-medium-letter-spacing);
+    margin-bottom: 16px;
+  }
+  
+  .ctaButton {
+    width: 167px;
+    height: 48px;
+    padding: 0;
+    font-family: var(--body-1-normal-bold-font-family);
+    font-size: var(--body-1-normal-bold-font-size);
+    font-weight: var(--body-1-normal-bold-font-weight);
+    line-height: var(--body-1-normal-bold-line-height);
+    letter-spacing: var(--body-1-normal-bold-letter-spacing);
   }
   
   .featureSection {
-    padding: 35px 20px;
+    padding: 0 16px 32px 16px;
   }
   
   .featureSection + .featureSection {
-    margin-top: 0;
+    margin-top: 48px;
   }
   
   .featureContent {
     flex-direction: column;
     gap: 40px;
+    align-items: center;
   }
   
   .featureContent.reversed {
@@ -180,21 +213,27 @@
   }
   
   .imagePlaceholder {
-    width: 100%;
-    max-width: 507px;
-    height: auto;
-    aspect-ratio: 507 / 471;
+    width: calc(100vw - 32px);
+    height: calc((100vw - 32px) * 471 / 507);
+  }
+  
+  .featureText {
+    width: auto;
   }
   
   .featureTitle {
-    font-size: 32px;
-    line-height: 44px;
-    text-align: center;
+    font-size: var(--title-3-bold-font-size);
+    line-height: var(--title-3-bold-line-height);
+    text-align: left;
+    margin-bottom: 16px;
   }
   
   .featureDescription {
-    font-size: 18px;
-    line-height: 28px;
-    text-align: center;
+    font-family: var(--body-2-reading-regular-font-family);
+    font-size: var(--body-2-reading-regular-font-size);
+    font-weight: var(--body-2-reading-regular-font-weight);
+    line-height: var(--body-2-reading-regular-line-height);
+    letter-spacing: var(--body-2-reading-regular-letter-spacing);
+    text-align: left;
   }
 }

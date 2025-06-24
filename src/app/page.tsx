@@ -3,6 +3,7 @@
 import styles from "./page.module.css";
 import Image from "next/image";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import section1 from "@/assets/images/section1.png";
 import section2 from "@/assets/images/section2.png";
 import section3 from "@/assets/images/section3.png";
@@ -62,14 +63,14 @@ export default function Home() {
           </div>
           <div className={styles.featureText}>
             <h2 className={styles.featureTitle}>
-              눈에 보이는 진척도 덕분에
+              조각을 채워가며
               <br />
-              작은 성취도 놓치지 않게 돼요
+              작은 성취를 만들어가세요.
             </h2>
             <p className={styles.featureDescription}>
-              할 일을 완료할 때마다 진척도가 업데이트돼요.
+              할 일을 진행할 때마다 조각이 채워져요.
               <br />
-              시각적으로 확인할 수 있어 계획을 점검하기에 좋아요.
+              조각을 완성하면 어느새 최종 합격이 눈앞에 !
             </p>
           </div>
         </div>
@@ -87,18 +88,20 @@ export default function Home() {
           </div>
           <div className={styles.featureText}>
             <h2 className={styles.featureTitle}>
-              멈춘 날도 괜찮아요,
+              멈춘 날도 괜찮아요.
               <br />
-              다시 시작할 수 있게 알려드려요
+              다시 시작할 수 있게 도울게요.
             </h2>
             <p className={styles.featureDescription}>
-              진척도가 일정 기간 멈춰 있으면, 알림으로 준비를 이어갈 수 있게 도와드려요.
+              진척도가 3일 동안 멈춰 있으면,
               <br />
-              중요한 채용 기회도 놓치지 않도록 챙겨드릴게요.
+              이메일로 할 일을 이어갈 수 있게 도와드려요.
             </p>
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }
