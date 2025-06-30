@@ -1,0 +1,104 @@
+.btn {
+  all: unset;
+  border-radius: 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: inherit;
+}
+
+.btn .textWrapper {
+  font-family: var(--font-pretendard);
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 24px;
+  text-align: center;
+  white-space: nowrap;
+  color: inherit;
+}
+
+/* Primary button style */
+.btn.primary {
+  align-items: center;
+  background-color: var(--primaryjogak-1);
+  display: inline-flex;
+  gap: 8px;
+  justify-content: center;
+  padding: 12px 30px;
+  color: var(--n-0);
+}
+
+.btn.primary:hover {
+  background-color: var(--primarymain-800);
+}
+
+.btn.primary .textWrapper {
+  margin-top: -1px;
+  position: relative;
+  width: fit-content;
+}
+
+/* Secondary button style */
+.btn.secondary {
+  background-color: var(--n0);
+  border: 1px solid;
+  border-color: var(--primaryjogak-2);
+  height: 48px;
+  padding: 12px 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn.secondary:hover {
+  background-color: var(--primarymain-100);
+}
+
+.btn.secondary .textWrapper {
+  color: var(--primaryjogak-1);
+  position: relative;
+}
+
+/* Tertiary button style */
+.btn.tertiary {
+  background-color: var(--n300);
+  height: 48px;
+  padding: 12px 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn.tertiary:hover {
+  background-color: var(--n400);
+}
+
+.btn.tertiary .textWrapper {
+  color: var(--n800);
+  position: relative;
+}
+
+/* Disabled button style */
+.btn.disabled {
+  align-items: center;
+  background-color: var(--n50);
+  border: 1px solid;
+  border-color: var(--primarymain-300);
+  display: flex;
+  gap: 8px;
+  height: 48px;
+  justify-content: center;
+  padding: 12px 16px;
+  cursor: not-allowed;
+}
+
+.btn.disabled .textWrapper {
+  color: var(--n500);
+  margin-top: -1px;
+  position: relative;
+  width: fit-content;
+}
