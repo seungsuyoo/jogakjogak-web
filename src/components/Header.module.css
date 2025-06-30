@@ -7,7 +7,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 38.2px 0 38.2px;
+  padding: 0 35.4px 0 38.2px;
   background-color: transparent;
   z-index: 1000;
   transition: background-color 0.3s ease;
@@ -15,7 +15,6 @@
 
 .header.whiteBackground {
   background-color: #FFFFFF;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .logo {
@@ -58,10 +57,23 @@
   background: #2A73EA;
 }
 
+.logoutButton {
+  background: transparent;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.logoutButton:hover {
+  opacity: 0.7;
+}
+
 /* Mobile styles */
 @media (max-width: 1032px) {
   .header {
-    padding: 0 13.09px 0 13.09px;
+    padding: 0 19.4px 0 13.09px;
   }
   
   .logo img {

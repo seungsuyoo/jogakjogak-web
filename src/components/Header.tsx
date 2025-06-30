@@ -4,13 +4,15 @@ import React, { useState } from "react";
 import Image from "next/image";
 import styles from "./Header.module.css";
 import logo from "@/assets/images/logo.svg";
+import logoutIcon from "@/assets/images/ic_logout.svg";
 import LoginModal from "./LoginModal";
 
 interface HeaderProps {
   backgroundColor?: "transparent" | "white";
+  showLogout?: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ backgroundColor = "transparent" }) => {
+const Header: React.FC<HeaderProps> = ({ backgroundColor = "transparent", showLogout = false }) => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const handleLoginClick = () => {
@@ -33,9 +35,20 @@ const Header: React.FC<HeaderProps> = ({ backgroundColor = "transparent" }) => {
             priority
           />
         </div>
-        <button className={styles.loginButton} onClick={handleLoginClick}>
-          <span>로그인</span>
-        </button>
+        {showLogout ? (
+          <button className={styles.logoutButton}>
+            <Image 
+              src={logoutIcon} 
+              alt="로그아웃" 
+              width={17.6} 
+              height={18}
+            />
+          </button>
+        ) : (
+          <button className={styles.loginButton} onClick={handleLoginClick}>
+            <span>로그인</span>
+          </button>
+        )}
       </header>
       <LoginModal isOpen={isLoginModalOpen} onClose={handleCloseModal} />
     </>
