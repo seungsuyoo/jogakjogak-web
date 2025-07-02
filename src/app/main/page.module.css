@@ -1,0 +1,22 @@
+.main {
+  min-height: 100vh;
+  padding-top: 80px; /* Header height */
+  background-color: var(--n-100);
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0;
+}
+
+.container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.container p {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+}
