@@ -6,12 +6,13 @@ interface ButtonProps {
   variant?: "primary" | "secondary" | "tertiary" | "disabled";
   children: React.ReactNode;
   onClick?: () => void;
+  className?: string;
 }
 
-export function Button({ variant = "primary", children, onClick }: ButtonProps) {
+export function Button({ variant = "primary", children, onClick, className = "" }: ButtonProps) {
   return (
     <button 
-      className={`${styles.btn} ${styles[variant]}`}
+      className={`${styles.btn} ${styles[variant]} ${className}`}
       onClick={onClick}
       disabled={variant === "disabled"}
     >
