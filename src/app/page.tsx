@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import styles from "./page.module.css";
 import Header from "@/components/Header";
@@ -11,7 +11,7 @@ import section1 from "@/assets/images/section1.png";
 import section2 from "@/assets/images/section2.png";
 import section3 from "@/assets/images/section3.png";
 
-export default function Home() {
+function HomeContent() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -66,5 +66,13 @@ export default function Home() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={null}>
+      <HomeContent />
+    </Suspense>
   );
 }
