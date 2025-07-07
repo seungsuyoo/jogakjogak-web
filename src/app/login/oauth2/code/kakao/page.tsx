@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { tokenManager } from '@/utils/auth';
 
-export default function KakaoCallback() {
+function KakaoCallbackContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -73,5 +73,25 @@ export default function KakaoCallback() {
     }}>
       <p>로그인 처리 중...</p>
     </div>
+  );
+}
+
+export default function KakaoCallback() {
+  return (
+    <Suspense 
+      fallback={
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          height: '100vh',
+          fontFamily: 'Pretendard'
+        }}>
+          <p>로딩 중...</p>
+        </div>
+      }
+    >
+      <KakaoCallbackContent />
+    </Suspense>
   );
 }
