@@ -23,6 +23,11 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     }
   };
 
+  const handleKakaoLogin = () => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://www.jogakjogak.com';
+    window.location.href = `${apiUrl}/oauth2/authorization/kakao`;
+  };
+
   return (
     <div className={styles.modalBackdrop} onClick={handleBackdropClick}>
       <div className={styles.modalContent}>
@@ -40,7 +45,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                 <span>Google 계정으로 시작하기</span>
               </button>
               
-              <button className={styles.kakaoButton}>
+              <button className={styles.kakaoButton} onClick={handleKakaoLogin}>
                 <Image src={kakaoIcon} alt="Kakao" width={18} height={18} />
                 <span>카카오톡으로 시작하기</span>
               </button>
@@ -84,7 +89,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                 <span>Google 계정으로 시작하기</span>
               </button>
               
-              <button className={styles.kakaoButton}>
+              <button className={styles.kakaoButton} onClick={handleKakaoLogin}>
                 <Image src={kakaoIcon} alt="Kakao" width={18} height={18} />
                 <span>카카오톡으로 시작하기</span>
               </button>
