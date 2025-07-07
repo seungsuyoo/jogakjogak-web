@@ -1,0 +1,29 @@
+.chip {
+  align-items: center;
+  border-radius: 6px;
+  display: inline-flex;
+  gap: 4px;
+  height: 26px;
+  justify-content: center;
+  padding: 2px 8px;
+  position: relative;
+}
+
+.default {
+  background-color: var(--primarymain-200);
+}
+
+.alarm {
+  background-color: var(--semantic-error);
+}
+
+.text {
+  color: var(--primaryjogak-1);
+  font-family: var(--label-2-medium-font-family);
+  font-size: var(--label-2-medium-font-size);
+  font-style: var(--label-2-medium-font-style);
+  font-weight: var(--label-2-medium-font-weight);
+  letter-spacing: var(--label-2-medium-letter-spacing);
+  line-height: var(--label-2-medium-line-height);
+  white-space: nowrap;
+}

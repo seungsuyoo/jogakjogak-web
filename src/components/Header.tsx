@@ -12,7 +12,7 @@ interface HeaderProps {
   showLogout?: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ backgroundColor = "transparent", showLogout = false }) => {
+export default function Header({ backgroundColor = "transparent", showLogout = false }: HeaderProps) {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const handleLoginClick = () => {
@@ -53,6 +53,4 @@ const Header: React.FC<HeaderProps> = ({ backgroundColor = "transparent", showLo
       <LoginModal isOpen={isLoginModalOpen} onClose={handleCloseModal} />
     </>
   );
-};
-
-export default Header;
+}
