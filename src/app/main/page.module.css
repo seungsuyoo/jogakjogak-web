@@ -1,13 +1,19 @@
 .main {
   min-height: 100vh;
-  padding-top: 80px; /* Header height */
+  padding-top: 64px; /* Header height */
   background-color: var(--n-100);
 }
 
 .container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
   padding: 24px 0;
+  max-width: 1560px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .container h1 {
@@ -19,4 +25,17 @@
 .container p {
   font-size: 1.125rem;
   color: var(--text-secondary);
+}
+
+.jobSection {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .jobSection {
+    flex-direction: column;
+  }
 }

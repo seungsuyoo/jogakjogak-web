@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import styles from "./page.module.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -10,6 +12,30 @@ import section2 from "@/assets/images/section2.png";
 import section3 from "@/assets/images/section3.png";
 
 export default function Home() {
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const error = searchParams.get('error');
+    if (error) {
+      let message = '';
+      switch (error) {
+        case 'no_code':
+          message = '인증 코드를 받지 못했습니다.';
+          break;
+        case 'login_failed':
+          message = '로그인에 실패했습니다. 다시 시도해 주세요.';
+          break;
+        default:
+          message = '오류가 발생했습니다.';
+      }
+      
+      // 에러 메시지를 사용자에게 표시 (추후 토스트나 모달로 개선 가능)
+      console.error('Login error:', message);
+      
+      // URL에서 에러 파라미터 제거
+      window.history.replaceState({}, '', '/');
+    }
+  }, [searchParams]);
   return (
     <div className={styles.container}>
       <Header backgroundColor="transparent" />
