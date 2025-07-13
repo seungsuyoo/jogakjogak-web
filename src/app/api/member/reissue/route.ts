@@ -28,90 +28,28 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // 백엔드 응답 헤더 확인
-    console.log('백엔드 응답 상태:', response.status);
-    console.log('백엔드 응답 헤더 전체:', Object.fromEntries(response.headers.entries()));
-    const setCookieHeader = response.headers.get('set-cookie');
-    console.log('Set-Cookie 헤더:', setCookieHeader);
-    
-    // 응답 텍스트 먼저 읽기
-    const responseText = await response.text();
-    console.log('백엔드 응답 원본 텍스트:', responseText);
-    
-    let data;
-    try {
-      data = JSON.parse(responseText);
-      console.log('백엔드 응답 파싱 성공:', data);
-    } catch {
-      console.log('JSON 파싱 실패, 응답이 JSON이 아님');
-      data = {};
-    }
+    const data = await response.json();
 
     // 백엔드 응답 처리
-    if (response.status === 200) {
-      let accessToken = null;
-      let newRefreshToken = null;
+    if (response.status === 200 && data.status === 'OK') {
+      // 백엔드가 data 필드에 직접 access token을 문자열로 보냄
+      const accessToken = data.data;
       
-      // Set-Cookie 헤더에서 토큰 찾기
-      if (setCookieHeader) {
-        const cookieArray = setCookieHeader.split(/,(?=\s*\w+=)/).map(c => c.trim());
-        
-        for (const cookie of cookieArray) {
-          const [name, ...valueParts] = cookie.split('=');
-          const value = valueParts.join('=').split(';')[0];
-          
-          // 가능한 access token 이름들
-          if (['access', 'accessToken', 'access_token', 'accesstoken'].includes(name)) {
-            accessToken = value;
-          }
-          // refresh token
-          if (['refresh', 'refreshToken', 'refresh_token', 'refreshtoken'].includes(name)) {
-            newRefreshToken = value;
-          }
-        }
-      }
-      
-      // JSON 응답에서도 확인 (백엔드가 양쪽 다 보낼 수도 있음)
-      if (!accessToken) {
-        accessToken = data.data?.newAccessToken || data.data?.accessToken || data.accessToken;
-      }
-      if (!newRefreshToken) {
-        newRefreshToken = data.data?.newRefreshToken || data.data?.refreshToken || data.refreshToken;
-      }
-      
-      if (!accessToken) {
-        console.error('Access token을 찾을 수 없음');
-        return NextResponse.json(
-          { code: 500, message: 'No access token in response' },
-          { status: 500 }
-        );
-      }
+      // refresh token은 쿠키에서 가져온 것을 그대로 사용
+      // (백엔드가 새로운 refresh token을 보내지 않는 경우)
       
       // 프론트엔드가 기대하는 형식으로 응답 생성
       const responseData = {
         code: 200,
         data: {
           access_token: accessToken,
-          refresh_token: newRefreshToken || refresh_token
+          refresh_token: refresh_token
         },
         message: 'Token reissued successfully'
       };
       
-      const res = NextResponse.json(responseData);
-      
-      // 새로운 refresh token을 쿠키에 저장
-      if (newRefreshToken) {
-        res.cookies.set('refresh', newRefreshToken, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          maxAge: 60 * 60 * 24 * 30, // 30일
-        });
-      }
-      
-      return res;
+      return NextResponse.json(responseData);
     } else {
-      console.error('백엔드 응답 실패:', response.status, data);
       return NextResponse.json(data || { code: response.status }, { status: response.status });
     }
   } catch (error) {
