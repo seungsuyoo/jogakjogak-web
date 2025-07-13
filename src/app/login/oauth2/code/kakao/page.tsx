@@ -27,11 +27,24 @@ function KakaoCallbackContent() {
             return;
           }
         } else {
-          // 프로덕션 환경: 쿠키에서 refresh token 가져오기
-          console.log('[PROD] 프로덕션 환경 - 쿠키에서 refresh token 가져오기 시도');
+          // 프로덕션 환경: 백엔드가 쿠키를 설정했는지 확인
+          console.log('[PROD] 프로덕션 환경 - 백엔드 로그인 콜백 처리 확인');
           console.log('[PROD] 현재 URL:', window.location.href);
-          console.log('[PROD] 쿠키 문자열:', document.cookie);
           
+          // URL에서 code와 state 파라미터 추출
+          const code = searchParams.get('code');
+          const state = searchParams.get('state');
+          console.log('[PROD] 카카오 인증 code:', code ? '있음' : '없음');
+          console.log('[PROD] state:', state ? '있음' : '없음');
+          
+          // 먼저 현재 쿠키 상태 확인
+          console.log('[PROD] 쿠키 문자열 (초기):', document.cookie);
+          
+          // 백엔드가 이미 처리했는지 확인하기 위해 잠시 대기
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          console.log('[PROD] 1초 후 쿠키 문자열:', document.cookie);
+          
+          // API를 통해 쿠키 확인
           const getRefreshTokenResponse = await fetch('/api/auth/get-refresh-token', {
             credentials: 'include',
           });
@@ -42,7 +55,23 @@ function KakaoCallbackContent() {
           
           if (!refreshTokenData.refresh_token) {
             console.error('[PROD] ❌ 쿠키에서 refresh token을 찾을 수 없습니다.');
-            console.error('[PROD] refreshTokenData:', refreshTokenData);
+            console.error('[PROD] 백엔드가 쿠키를 설정하지 않았을 가능성이 있습니다.');
+            
+            // 백엔드가 처리하지 않았다면 프론트에서 직접 처리 시도
+            if (code) {
+              console.log('[PROD] 백엔드 직접 호출 시도');
+              try {
+                const backendResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://www.jogakjogak.com'}/login/oauth2/code/kakao?code=${code}&state=${state || ''}`, {
+                  method: 'GET',
+                  credentials: 'include',
+                });
+                console.log('[PROD] 백엔드 직접 호출 응답:', backendResponse.status);
+                console.log('[PROD] 백엔드 응답 헤더:', Object.fromEntries(backendResponse.headers.entries()));
+              } catch (err) {
+                console.error('[PROD] 백엔드 직접 호출 실패:', err);
+              }
+            }
+            
             router.push('/?error=login_failed');
             return;
           }
