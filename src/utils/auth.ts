@@ -21,7 +21,9 @@ export const tokenManager = {
 
   getRefreshToken: async () => {
     // 서버에서 쿠키를 읽어야 하므로 API 호출 필요
-    const response = await fetch('/api/auth/get-refresh-token');
+    const response = await fetch('/api/auth/get-refresh-token', {
+      credentials: 'include',
+    });
     const data = await response.json();
     return data.refresh_token;
   },
@@ -30,19 +32,22 @@ export const tokenManager = {
 // 토큰 재발급 함수
 export async function reissueToken(): Promise<boolean> {
   try {
+    const refreshToken = await tokenManager.getRefreshToken();
+    
     const response = await fetch('/api/member/reissue', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify({
-        refresh_token: await tokenManager.getRefreshToken(),
+        refresh_token: refreshToken,
       }),
     });
 
     const data = await response.json();
 
-    if (data.code === 200) {
+    if (data.code === 200 && data.data?.access_token) {
       tokenManager.setAccessToken(data.data.access_token);
       return true;
     }
@@ -63,7 +68,11 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
     ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
   };
 
-  let response = await fetch(url, { ...options, headers });
+  let response = await fetch(url, { 
+    ...options, 
+    headers,
+    credentials: 'include', // 쿠키 포함
+  });
 
   // 토큰 만료 시 재발급 시도
   if (response.status === 401) {
@@ -73,11 +82,15 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
       // 새 토큰으로 재시도
       const newAccessToken = tokenManager.getAccessToken();
       headers.Authorization = `Bearer ${newAccessToken}`;
-      response = await fetch(url, { ...options, headers });
+      response = await fetch(url, { 
+        ...options, 
+        headers,
+        credentials: 'include',
+      });
     } else {
       // 재발급 실패 시 로그인 페이지로 리다이렉트
       tokenManager.removeAccessToken();
-      window.location.href = '/';
+      window.location.href = '/?error=session_expired';
     }
   }
 
@@ -89,13 +102,16 @@ export async function logout() {
   try {
     const refreshToken = await tokenManager.getRefreshToken();
     
-    await fetch('/api/member/logout', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ refresh_token: refreshToken }),
-    });
+    if (refreshToken) {
+      await fetch('/api/member/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ refresh_token: refreshToken }),
+      });
+    }
   } catch (error) {
     console.error('Logout error:', error);
   } finally {
