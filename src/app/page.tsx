@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, Suspense, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -10,9 +10,32 @@ import FeatureSection from "@/components/FeatureSection";
 import section1 from "@/assets/images/section1.png";
 import section2 from "@/assets/images/section2.png";
 import section3 from "@/assets/images/section3.png";
+import { tokenManager } from "@/utils/auth";
 
-export default function Home() {
+// Main page components
+import mainStyles from "./main/page.module.css";
+import { ResumeRegistration } from "@/components/ResumeRegistration";
+import { JobAdd } from "@/components/JobAdd";
+import { JobList } from "@/components/JobList";
+
+function HomeContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    // 로그인 상태 확인
+    const checkAuth = () => {
+      const token = tokenManager.getAccessToken();
+      setIsAuthenticated(!!token);
+    };
+
+    checkAuth();
+
+    // 토큰 변경 시 리스너 등록 (로그아웃 시 대응)
+    window.addEventListener('storage', checkAuth);
+    return () => window.removeEventListener('storage', checkAuth);
+  }, []);
 
   useEffect(() => {
     const error = searchParams.get('error');
@@ -36,6 +59,48 @@ export default function Home() {
       window.history.replaceState({}, '', '/');
     }
   }, [searchParams]);
+
+  const handleJobClick = () => {
+    router.push("/job/1");
+  };
+
+  // 로딩 중
+  if (isAuthenticated === null) {
+    return <div style={{ minHeight: '100vh' }} />;
+  }
+
+  // 로그인 상태에 따른 컨텐츠 렌더링
+  if (isAuthenticated) {
+    return (
+      <>
+        <Header backgroundColor="white" showLogout={true} />
+        <main className={mainStyles.main}>
+          <div className={mainStyles.container}>
+            <ResumeRegistration />
+            
+            <div className={mainStyles.jobSection}>
+              <JobAdd />
+              
+              {/* Mock job posting */}
+              <JobList
+                title="2025 상반기 신입 개발자 채용"
+                company="카카오"
+                registerDate="2025년 01월 07일"
+                state="default"
+                completedCount="12"
+                totalCount="30"
+                dDay={52}
+                onClick={handleJobClick}
+              />
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
+  // 비로그인 상태 - 랜딩 페이지
   return (
     <div className={styles.container}>
       <Header backgroundColor="transparent" />
@@ -66,5 +131,13 @@ export default function Home() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={null}>
+      <HomeContent />
+    </Suspense>
   );
 }

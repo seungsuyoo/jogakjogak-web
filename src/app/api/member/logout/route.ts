@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
 
     // 로그아웃 성공 여부와 관계없이 쿠키 삭제
     const res = NextResponse.json(data);
-    res.cookies.delete('refresh_token');
+    res.cookies.delete('refresh'); // 쿠키 이름을 refresh로 변경
     
     return res;
   } catch (error) {
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       { code: 500, message: 'Internal server error' },
       { status: 500 }
     );
-    res.cookies.delete('refresh_token');
+    res.cookies.delete('refresh');
     return res;
   }
 }

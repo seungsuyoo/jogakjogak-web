@@ -1,57 +1,81 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { tokenManager } from '@/utils/auth';
 
-export default function KakaoCallback() {
+function KakaoCallbackContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
   useEffect(() => {
     const handleCallback = async () => {
-      const code = searchParams.get('code');
-
-      if (!code) {
-        console.error('No authorization code received');
-        router.push('/?error=no_code');
-        return;
-      }
-
       try {
-        // 백엔드 서버가 이미 인증을 처리하고 쿠키에 refresh_token을 설정
-        // 먼저 쿠키에서 refresh_token을 확인
-        const getRefreshTokenResponse = await fetch('/api/auth/get-refresh-token', {
-          credentials: 'include',
-        });
-        const refreshTokenData = await getRefreshTokenResponse.json();
+        console.log('===== 카카오 로그인 콜백 시작 =====');
+        console.log('환경:', process.env.NODE_ENV);
         
-        if (!refreshTokenData.refresh_token) {
-          // refresh_token이 없으면 백엔드 서버에서 로그인 처리가 완료되지 않은 것
-          console.error('No refresh token found in cookies');
-          router.push('/?error=login_failed');
-          return;
+        let refreshToken: string | null = null;
+
+        // 개발 환경: URL 파라미터에서 refresh token 가져오기
+        if (process.env.NODE_ENV === 'development') {
+          refreshToken = searchParams.get('refreshToken');
+          console.log('개발 환경 - URL에서 refresh token 추출:', refreshToken ? '성공' : '실패');
+          
+          if (!refreshToken) {
+            console.error('❌ URL 파라미터에 refresh token이 없습니다.');
+            router.push('/?error=no_refresh_token');
+            return;
+          }
+        } else {
+          // 프로덕션 환경: 쿠키에서 refresh token 가져오기
+          console.log('프로덕션 환경 - 쿠키에서 refresh token 가져오기 시도');
+          const getRefreshTokenResponse = await fetch('/api/auth/get-refresh-token', {
+            credentials: 'include',
+          });
+          const refreshTokenData = await getRefreshTokenResponse.json();
+          
+          if (!refreshTokenData.refresh_token) {
+            console.error('❌ 쿠키에서 refresh token을 찾을 수 없습니다.');
+            router.push('/?error=login_failed');
+            return;
+          }
+          
+          refreshToken = refreshTokenData.refresh_token;
+          console.log('프로덕션 환경 - 쿠키에서 refresh token 추출: 성공');
         }
 
-        // refresh_token이 있으면 토큰 재발급을 통해 access_token 받기
+        // refresh_token으로 access_token 받기
+        console.log('토큰 재발급 API 호출 시작');
         const response = await fetch('/api/member/reissue', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          credentials: 'include', // 쿠키 포함
+          credentials: 'include',
           body: JSON.stringify({
-            refresh_token: refreshTokenData.refresh_token
+            refresh_token: refreshToken
           }),
         });
+        console.log('토큰 재발급 API 응답 상태:', response.status);
 
         const data = await response.json();
 
-        if (data.code === 200 && data.data.access_token) {
+        console.log('===== 카카오 로그인 처리 결과 =====');
+        console.log('Reissue response:', data);
+        console.log('Response status:', response.status);
+        console.log('Response code:', data.code);
+        console.log('Access token 존재 여부:', !!data.data?.access_token);
+        console.log('Refresh token 존재 여부:', !!data.data?.refresh_token);
+
+        if (data.code === 200 && data.data?.access_token) {
+          console.log('✅ 로그인 성공! Access token을 저장합니다.');
           // access_token을 localStorage에 저장
           tokenManager.setAccessToken(data.data.access_token);
+          console.log('✅ Access token 저장 완료. 메인 페이지로 이동합니다.');
           router.push('/');
         } else {
+          console.log('❌ 로그인 실패!');
+          console.log('실패 이유:', data.message || 'Access token이 없습니다.');
           throw new Error(data.message || 'Failed to get tokens');
         }
       } catch (error) {
@@ -73,5 +97,25 @@ export default function KakaoCallback() {
     }}>
       <p>로그인 처리 중...</p>
     </div>
+  );
+}
+
+export default function KakaoCallback() {
+  return (
+    <Suspense 
+      fallback={
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          height: '100vh',
+          fontFamily: 'Pretendard'
+        }}>
+          <p>로딩 중...</p>
+        </div>
+      }
+    >
+      <KakaoCallbackContent />
+    </Suspense>
   );
 }

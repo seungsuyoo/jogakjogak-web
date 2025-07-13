@@ -6,6 +6,7 @@ import styles from "./Header.module.css";
 import logo from "@/assets/images/logo.svg";
 import logoutIcon from "@/assets/images/ic_logout.svg";
 import LoginModal from "./LoginModal";
+import { logout } from "@/utils/auth";
 
 interface HeaderProps {
   backgroundColor?: "transparent" | "white";
@@ -23,6 +24,14 @@ export default function Header({ backgroundColor = "transparent", showLogout = f
     setIsLoginModalOpen(false);
   };
 
+  const handleLogoutClick = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
   return (
     <>
       <header className={`${styles.header} ${backgroundColor === "white" ? styles.whiteBackground : ""}`}>
@@ -36,7 +45,7 @@ export default function Header({ backgroundColor = "transparent", showLogout = f
           />
         </div>
         {showLogout ? (
-          <button className={styles.logoutButton}>
+          <button className={styles.logoutButton} onClick={handleLogoutClick}>
             <Image 
               src={logoutIcon} 
               alt="로그아웃" 
