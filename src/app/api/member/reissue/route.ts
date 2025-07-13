@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.jogakjogak.com';
 
     // 백엔드 서버로 토큰 재발급 요청 - 쿠키로 전송
-    const response = await fetch(`${backendUrl}/api/member/reissue`, {
+    const response = await fetch(`${backendUrl}/member/reissue`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
