@@ -43,7 +43,7 @@ function KakaoCallbackContent() {
         
         refreshToken = refreshTokenData.refresh_token;
         console.log('✅ 쿠키에서 refresh token 추출: 성공');
-        console.log('refresh token 길이:', refreshToken.length);
+        console.log('refresh token 길이:', refreshToken?.length || 0);
 
         // refresh_token으로 access_token 받기
         console.log('토큰 재발급 API 호출 시작');
