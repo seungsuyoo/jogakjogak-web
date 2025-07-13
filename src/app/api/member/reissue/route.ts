@@ -30,15 +30,20 @@ export async function POST(request: NextRequest) {
 
     // 백엔드 응답 헤더 확인
     console.log('백엔드 응답 상태:', response.status);
+    console.log('백엔드 응답 헤더 전체:', Object.fromEntries(response.headers.entries()));
     const setCookieHeader = response.headers.get('set-cookie');
     console.log('Set-Cookie 헤더:', setCookieHeader);
     
+    // 응답 텍스트 먼저 읽기
+    const responseText = await response.text();
+    console.log('백엔드 응답 원본 텍스트:', responseText);
+    
     let data;
     try {
-      data = await response.json();
-      console.log('백엔드 응답 본문:', data);
+      data = JSON.parse(responseText);
+      console.log('백엔드 응답 파싱 성공:', data);
     } catch {
-      console.log('JSON 파싱 실패');
+      console.log('JSON 파싱 실패, 응답이 JSON이 아님');
       data = {};
     }
 
