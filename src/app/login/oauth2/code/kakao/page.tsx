@@ -28,20 +28,28 @@ function KakaoCallbackContent() {
           }
         } else {
           // 프로덕션 환경: 쿠키에서 refresh token 가져오기
-          console.log('프로덕션 환경 - 쿠키에서 refresh token 가져오기 시도');
+          console.log('[PROD] 프로덕션 환경 - 쿠키에서 refresh token 가져오기 시도');
+          console.log('[PROD] 현재 URL:', window.location.href);
+          console.log('[PROD] 쿠키 문자열:', document.cookie);
+          
           const getRefreshTokenResponse = await fetch('/api/auth/get-refresh-token', {
             credentials: 'include',
           });
+          
+          console.log('[PROD] get-refresh-token API 응답 상태:', getRefreshTokenResponse.status);
           const refreshTokenData = await getRefreshTokenResponse.json();
+          console.log('[PROD] get-refresh-token API 응답:', JSON.stringify(refreshTokenData));
           
           if (!refreshTokenData.refresh_token) {
-            console.error('❌ 쿠키에서 refresh token을 찾을 수 없습니다.');
+            console.error('[PROD] ❌ 쿠키에서 refresh token을 찾을 수 없습니다.');
+            console.error('[PROD] refreshTokenData:', refreshTokenData);
             router.push('/?error=login_failed');
             return;
           }
           
           refreshToken = refreshTokenData.refresh_token;
-          console.log('프로덕션 환경 - 쿠키에서 refresh token 추출: 성공');
+          console.log('[PROD] 프로덕션 환경 - 쿠키에서 refresh token 추출: 성공');
+          console.log('[PROD] refresh token 길이:', refreshToken?.length || 0);
         }
 
         // refresh_token으로 access_token 받기
