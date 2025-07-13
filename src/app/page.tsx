@@ -26,12 +26,8 @@ function HomeContent() {
   useEffect(() => {
     // 로그인 상태 확인
     const checkAuth = () => {
-      console.log('[PROD] 메인 페이지 - 인증 상태 확인 시작');
       const token = tokenManager.getAccessToken();
-      console.log('[PROD] 메인 페이지 - Access token:', token ? `있음 (길이: ${token.length})` : '없음');
-      console.log('[PROD] 메인 페이지 - localStorage 전체:', localStorage);
       setIsAuthenticated(!!token);
-      console.log('[PROD] 메인 페이지 - isAuthenticated 설정:', !!token);
     };
 
     checkAuth();

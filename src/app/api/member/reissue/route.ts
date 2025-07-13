@@ -5,14 +5,13 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     let { refresh_token } = body;
 
-    console.log('[PROD] Reissue API - Received body:', JSON.stringify(body));
-    console.log('[PROD] Reissue API - Initial refresh_token:', refresh_token ? `있음 (길이: ${refresh_token.length})` : '없음');
+    console.log('Reissue API - Received body:', body);
+    console.log('Reissue API - Initial refresh_token:', refresh_token);
 
     // refresh_token이 없는 경우 쿠키에서 읽기 (프로덕션 환경)
     if (!refresh_token) {
       refresh_token = request.cookies.get('refresh')?.value;
-      console.log('[PROD] Reissue API - Token from cookie:', refresh_token ? `있음 (길이: ${refresh_token.length})` : '없음');
-      console.log('[PROD] Reissue API - 모든 쿠키:', request.cookies.getAll());
+      console.log('Reissue API - Token from cookie:', refresh_token);
     }
 
     if (!refresh_token) {
@@ -23,8 +22,8 @@ export async function POST(request: NextRequest) {
     }
 
     const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://www.jogakjogak.com';
-    console.log('[PROD] Reissue API - Backend URL:', backendUrl);
-    console.log('[PROD] Reissue API - Sending refresh_token 길이:', refresh_token.length);
+    console.log('Reissue API - Backend URL:', backendUrl);
+    console.log('Reissue API - Sending refresh_token:', refresh_token);
 
     // 백엔드 서버로 토큰 재발급 요청 - 쿠키로 전송
     const response = await fetch(`${backendUrl}/api/member/reissue`, {
@@ -36,9 +35,8 @@ export async function POST(request: NextRequest) {
     });
 
     const data = await response.json();
-    console.log('[PROD] Reissue API - Backend response:', JSON.stringify(data));
-    console.log('[PROD] Reissue API - Backend status:', response.status);
-    console.log('[PROD] Reissue API - Response headers:', Object.fromEntries(response.headers.entries()));
+    console.log('Reissue API - Backend response:', data);
+    console.log('Reissue API - Backend status:', response.status);
 
     // 백엔드 응답 처리
     if (response.status === 200 && data.status === 'OK') {
@@ -46,8 +44,8 @@ export async function POST(request: NextRequest) {
       const accessToken = data.data?.newAccessToken;
       const refreshToken = data.data?.newRefreshToken;
       
-      console.log('[PROD] Reissue API - New access_token:', accessToken ? `있음 (길이: ${accessToken.length})` : '없음');
-      console.log('[PROD] Reissue API - New refresh_token:', refreshToken ? `있음 (길이: ${refreshToken.length})` : '없음');
+      console.log('Reissue API - New access_token:', accessToken);
+      console.log('Reissue API - New refresh_token:', refreshToken);
       
       // 프론트엔드가 기대하는 형식으로 응답 생성
       const responseData = {
@@ -73,14 +71,10 @@ export async function POST(request: NextRequest) {
       
       return res;
     } else {
-      console.error('[PROD] Reissue API - 토큰 재발급 실패');
-      console.error('[PROD] Response status:', response.status);
-      console.error('[PROD] Response data:', JSON.stringify(data));
       return NextResponse.json(data, { status: response.status });
     }
   } catch (error) {
-    console.error('[PROD] Token reissue error:', error);
-    console.error('[PROD] Error details:', error instanceof Error ? error.message : String(error));
+    console.error('Token reissue error:', error);
     return NextResponse.json(
       { code: 500, message: 'Internal server error' },
       { status: 500 }
