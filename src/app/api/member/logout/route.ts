@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 백엔드 서버로 로그아웃 요청
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://www.jogakjogak.com'}/api/member/logout`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://api.jogakjogak.com'}/member/logout`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
