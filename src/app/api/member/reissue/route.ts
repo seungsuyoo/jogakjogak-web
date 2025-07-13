@@ -28,6 +28,8 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    // Set-Cookie 헤더 확인
+    const setCookieHeader = response.headers.get('set-cookie');
     const data = await response.json();
 
     // 백엔드 응답 처리
@@ -35,20 +37,42 @@ export async function POST(request: NextRequest) {
       // 백엔드가 data 필드에 직접 access token을 문자열로 보냄
       const accessToken = data.data;
       
-      // refresh token은 쿠키에서 가져온 것을 그대로 사용
-      // (백엔드가 새로운 refresh token을 보내지 않는 경우)
+      // Set-Cookie에서 새로운 refresh token 찾기
+      let newRefreshToken = null;
+      if (setCookieHeader) {
+        // Set-Cookie 헤더 파싱
+        const cookies = setCookieHeader.split(/,(?=\s*\w+=)/).map(c => c.trim());
+        for (const cookie of cookies) {
+          if (cookie.startsWith('refresh=')) {
+            newRefreshToken = cookie.split('=')[1].split(';')[0];
+            break;
+          }
+        }
+      }
       
       // 프론트엔드가 기대하는 형식으로 응답 생성
       const responseData = {
         code: 200,
         data: {
           access_token: accessToken,
-          refresh_token: refresh_token
+          refresh_token: newRefreshToken || refresh_token
         },
         message: 'Token reissued successfully'
       };
       
-      return NextResponse.json(responseData);
+      const res = NextResponse.json(responseData);
+      
+      // 새로운 refresh token을 프론트엔드 쿠키에도 저장
+      if (newRefreshToken) {
+        res.cookies.set('refresh', newRefreshToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          maxAge: 60 * 60 * 24 * 30, // 30일
+        });
+      }
+      
+      return res;
     } else {
       return NextResponse.json(data || { code: response.status }, { status: response.status });
     }
