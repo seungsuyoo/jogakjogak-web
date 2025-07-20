@@ -444,3 +444,134 @@
   width: 100%;
   max-width: 1260px;
 }
+
+/* Dropdown menu styles */
+.moreMenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background-color: #ffffff;
+  border: 1px solid var(--n-300);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  min-width: 120px;
+  overflow: hidden;
+}
+
+.moreMenuItem {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--n-900);
+  font-family: var(--body-2-normal-medium-font-family);
+  font-size: var(--body-2-normal-medium-font-size);
+  font-weight: var(--body-2-normal-medium-font-weight);
+  transition: background-color 0.2s;
+}
+
+.moreMenuItem:hover {
+  background-color: var(--n-200);
+}
+
+.moreMenuItem:active {
+  background-color: var(--n-300);
+}
+
+/* Modal styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.modal {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modalTitle {
+  font-family: var(--heading-2-bold-font-family);
+  font-size: var(--heading-2-bold-font-size);
+  font-weight: var(--heading-2-bold-font-weight);
+  color: var(--n-950);
+  margin: 0 0 16px 0;
+  text-align: center;
+}
+
+.modalMessage {
+  font-family: var(--body-1-normal-regular-font-family);
+  font-size: var(--body-1-normal-regular-font-size);
+  font-weight: var(--body-1-normal-regular-font-weight);
+  color: var(--n-700);
+  margin: 0 0 24px 0;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.modalButtons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.modalCancel,
+.modalConfirm {
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  font-family: var(--body-1-normal-bold-font-family);
+  font-size: var(--body-1-normal-bold-font-size);
+  font-weight: var(--body-1-normal-bold-font-weight);
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 100px;
+}
+
+.modalCancel {
+  background-color: var(--n-200);
+  color: var(--n-700);
+}
+
+.modalCancel:hover {
+  background-color: var(--n-300);
+}
+
+.modalConfirm {
+  background-color: #ff4444;
+  color: #ffffff;
+}
+
+.modalConfirm:hover {
+  background-color: #ff3333;
+}
+
+/* Alarm button styles */
+.notificationBtn.alarmOn {
+  background-color: var(--primaryjogak-1);
+  border-color: var(--primaryjogak-1);
+}
+
+.notificationBtn.alarmOn:hover {
+  background-color: var(--primaryjogak-2);
+}
+
+.notificationBtn.alarmOn .notificationBtnText {
+  color: #ffffff;
+}

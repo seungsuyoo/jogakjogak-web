@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import styles from "./Header.module.css";
 import logo from "@/assets/images/logo.svg";
 import logoutIcon from "@/assets/images/ic_logout.svg";
@@ -24,18 +25,20 @@ export default function Header({ backgroundColor = "transparent", showLogout = f
     setIsLoginModalOpen(false);
   };
 
-  const handleLogoutClick = async () => {
-    try {
-      await logout();
-    } catch (error) {
+  const handleLogoutClick = () => {
+    // 즉시 UI 업데이트를 위해 홈으로 이동
+    window.location.href = '/';
+    
+    // 백그라운드에서 로그아웃 처리
+    logout().catch(error => {
       console.error('Logout failed:', error);
-    }
+    });
   };
 
   return (
     <>
       <header className={`${styles.header} ${backgroundColor === "white" ? styles.whiteBackground : ""}`}>
-        <div className={styles.logo}>
+        <Link href="/" className={styles.logo}>
           <Image 
             src={logo} 
             alt="조각조각 로고" 
@@ -43,7 +46,7 @@ export default function Header({ backgroundColor = "transparent", showLogout = f
             height={25.11}
             priority
           />
-        </div>
+        </Link>
         {showLogout ? (
           <button className={styles.logoutButton} onClick={handleLogoutClick}>
             <Image 

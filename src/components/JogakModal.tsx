@@ -1,16 +1,29 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { StaticImageData } from "next/image";
 import styles from "./JogakModal.module.css";
 import { JogakDetailModal } from "./JogakDetailModal";
 import { Button } from "./Button";
+import { TodoEditModal } from "./TodoEditModal";
 
 interface JogakItem {
   id: string;
   text: string;
   completed: boolean;
+  content?: string;
+  fullTodo?: {
+    checklist_id: number;
+    category: string;
+    title: string;
+    content: string;
+    memo: string;
+    jdId: number;
+    createdAt: string;
+    updatedAt: string;
+    done: boolean;
+  };
 }
 
 interface Props {
@@ -21,6 +34,11 @@ interface Props {
   icon?: StaticImageData;
   checkboxColor?: string;
   onItemToggle?: (itemId: string) => void;
+  onItemEdit?: (itemId: string, data: { category: string; title: string; content: string }) => void;
+  onItemDelete?: (itemId: string) => void;
+  onItemAdd?: (data: { category: string; title: string; content: string }) => void;
+  category?: string;
+  categories?: { value: string; label: string }[];
 }
 
 export function JogakModal({
@@ -30,8 +48,42 @@ export function JogakModal({
   items = [],
   icon,
   checkboxColor = "#D9A9F9",
-  onItemToggle
+  onItemToggle,
+  onItemEdit,
+  onItemDelete,
+  onItemAdd,
+  category,
+  categories = []
 }: Props) {
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState<JogakItem | null>(null);
+
+  const handleEditClick = (item: JogakItem) => {
+    setEditingItem(item);
+    setEditModalOpen(true);
+  };
+
+  const handleAddClick = () => {
+    setEditingItem(null);
+    setEditModalOpen(true);
+  };
+
+  const handleEditModalSave = (data: { category: string; title: string; content: string }) => {
+    if (editingItem) {
+      onItemEdit?.(editingItem.id, data);
+    } else {
+      onItemAdd?.(data);
+    }
+    setEditModalOpen(false);
+    setEditingItem(null);
+  };
+
+  const handleDeleteClick = (item: JogakItem) => {
+    if (confirm(`"${item.text}" 조각을 삭제하시겠습니까?`)) {
+      onItemDelete?.(item.id);
+    }
+  };
+
   if (!isOpen) return null;
 
   const completedCount = items.filter(item => item.completed).length;
@@ -74,14 +126,15 @@ export function JogakModal({
                   key={item.id}
                   state={item.completed ? "done" : "default"}
                   text={item.text}
+                  description={item.content}
                   onClick={() => onItemToggle?.(item.id)}
                   checkboxColor={checkboxColor}
                   completedAt={item.completed ? "24.12.15 14:30:00" : undefined}
-                  onEdit={() => console.log(`Edit item: ${item.id}`)}
-                  onDelete={() => console.log(`Delete item: ${item.id}`)}
+                  onEdit={() => handleEditClick(item)}
+                  onDelete={() => handleDeleteClick(item)}
                 />
               ))}
-              <JogakDetailModal state="add-custom" onClick={() => console.log("Add custom item")} />
+              <JogakDetailModal state="add-custom" onClick={handleAddClick} />
             </div>
           </div>
         </div>
@@ -96,6 +149,25 @@ export function JogakModal({
           </Button>
         </div>
       </div>
+
+      <TodoEditModal
+        isOpen={editModalOpen}
+        onClose={() => {
+          setEditModalOpen(false);
+          setEditingItem(null);
+        }}
+        onSave={handleEditModalSave}
+        initialData={editingItem ? {
+          category: editingItem.fullTodo?.category || category || "",
+          title: editingItem.text,
+          content: editingItem.content || ""
+        } : {
+          category: category || "",
+          title: "",
+          content: ""
+        }}
+        categories={categories}
+      />
     </>
   );
 }

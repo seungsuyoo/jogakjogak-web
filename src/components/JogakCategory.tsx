@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { StaticImageData } from "next/image";
 import styles from "./JogakCategory.module.css";
@@ -11,6 +11,18 @@ interface JogakItem {
   id: string;
   text: string;
   completed: boolean;
+  content?: string;
+  fullTodo?: {
+    checklist_id: number;
+    category: string;
+    title: string;
+    content: string;
+    memo: string;
+    jdId: number;
+    createdAt: string;
+    updatedAt: string;
+    done: boolean;
+  };
 }
 
 interface Props {
@@ -19,8 +31,13 @@ interface Props {
   title?: string;
   initialItems?: JogakItem[];
   onItemToggle?: (itemId: string) => void;
+  onItemEdit?: (itemId: string, data: { category: string; title: string; content: string }) => void;
+  onItemDelete?: (itemId: string) => void;
+  onItemAdd?: (data: { category: string; title: string; content: string }) => void;
   checkboxColor?: string;
   icon?: StaticImageData;
+  category?: string;
+  categories?: { value: string; label: string }[];
 }
 
 export function JogakCategory({
@@ -34,11 +51,21 @@ export function JogakCategory({
     { id: "4", text: "TO DO LIST EXAMPLE", completed: false },
   ],
   onItemToggle,
+  onItemEdit,
+  onItemDelete,
+  onItemAdd,
   checkboxColor = "#D9A9F9",
-  icon = experienceIcon
+  icon = experienceIcon,
+  category,
+  categories = []
 }: Props) {
   const [items, setItems] = useState<JogakItem[]>(initialItems);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // initialItems가 변경될 때 내부 state 업데이트
+  useEffect(() => {
+    setItems(initialItems);
+  }, [initialItems]);
 
   const handleItemToggle = (itemId: string) => {
     setItems(prevItems => 
@@ -129,6 +156,11 @@ export function JogakCategory({
         icon={icon}
         checkboxColor={checkboxColor}
         onItemToggle={handleItemToggle}
+        onItemEdit={onItemEdit}
+        onItemDelete={onItemDelete}
+        onItemAdd={onItemAdd}
+        category={category}
+        categories={categories}
       />
     </div>
   );

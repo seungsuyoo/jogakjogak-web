@@ -7,6 +7,7 @@ import styles from "./page.module.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import arrowBackIcon from "@/assets/images/ic_arrow_back.svg";
+import { tokenManager } from "@/utils/auth";
 
 export default function CreateJobPage() {
   const router = useRouter();
@@ -16,21 +17,66 @@ export default function CreateJobPage() {
   const [deadline, setDeadline] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [jobUrl, setJobUrl] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleBack = () => {
     router.back();
   };
 
-  const handleSubmit = () => {
-    // 채용공고 등록 로직
-    console.log({
-      jobTitle,
-      companyName,
-      jobPosition,
-      deadline,
-      jobDescription,
-      jobUrl
-    });
+  const handleSubmit = async () => {
+    // 필수 필드 검증
+    if (!jobTitle.trim()) {
+      alert("채용공고 제목을 입력해주세요.");
+      return;
+    }
+    if (!companyName.trim()) {
+      alert("회사 이름을 입력해주세요.");
+      return;
+    }
+    if (!jobDescription.trim()) {
+      alert("채용공고 내용을 입력해주세요.");
+      return;
+    }
+    if (!deadline) {
+      alert("마감일을 설정해주세요.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const accessToken = tokenManager.getAccessToken();
+      
+      const response = await fetch('/api/jds/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        body: JSON.stringify({
+          title: jobTitle,
+          companyName: companyName,
+          job: jobPosition || "채용",  // 직무명 필수 - 기본값 제공
+          content: jobDescription,
+          link: jobUrl,  // jdUrl로 변환은 API route에서 처리
+          endDate: deadline
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("채용공고가 성공적으로 등록되었습니다.\nAI가 분석하여 맞춤형 투두리스트를 생성했습니다.");
+        // JD 상세 페이지로 이동
+        router.push(`/job/${data.data.jdId}`);
+      } else {
+        alert(data.message || "채용공고 등록에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error('JD submission error:', error);
+      alert("채용공고 등록 중 오류가 발생했습니다.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -121,8 +167,14 @@ export default function CreateJobPage() {
             </div>
 
             {/* 완료하기 버튼 */}
-            <button className={styles.completeButton} onClick={handleSubmit}>
-              <span className={styles.completeButtonText}>조각 생성하기</span>
+            <button 
+              className={styles.completeButton} 
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+            >
+              <span className={styles.completeButtonText}>
+                {isSubmitting ? 'AI가 분석 중...' : '조각 생성하기'}
+              </span>
             </button>
           </div>
         </div>

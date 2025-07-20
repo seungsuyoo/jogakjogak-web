@@ -254,3 +254,49 @@
   top: 50%;
   transform: translate(-50%, -50%);
 }
+
+/* Loading spinner styles */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 360px;
+  background-color: var(--n-100);
+  border-radius: 10px;
+  gap: 16px;
+}
+
+.fullLoadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 500px;
+  gap: 16px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--n-300);
+  border-top-color: var(--primaryjogak-1);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingText {
+  color: var(--n-600);
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+}
