@@ -2,14 +2,26 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { refresh_token } = body;
+    let refresh_token;
+    
+    // Content-Type과 body 존재 여부 확인
+    const contentType = request.headers.get('content-type');
+    if (contentType?.includes('application/json')) {
+      try {
+        const body = await request.json();
+        refresh_token = body.refresh_token;
+      } catch {
+        // JSON 파싱 실패 시 refresh_token 없음으로 처리
+      }
+    }
 
     if (!refresh_token) {
-      return NextResponse.json(
-        { code: 400, message: 'refresh_token is required' },
-        { status: 400 }
+      // refresh_token이 없어도 쿠키는 삭제하고 성공 응답
+      const res = NextResponse.json(
+        { code: 200, message: 'Logged out successfully (no token)' }
       );
+      res.cookies.delete('refresh');
+      return res;
     }
 
     // 백엔드 서버로 로그아웃 요청
