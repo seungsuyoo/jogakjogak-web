@@ -18,10 +18,34 @@ import { ResumeRegistration } from "@/components/ResumeRegistration";
 import { JobAdd } from "@/components/JobAdd";
 import { JobList } from "@/components/JobList";
 
+interface Resume {
+  resumeId: number;
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface JobDescription {
+  jd_id: number;
+  title: string;
+  isBookmark: boolean;
+  companyName: string;
+  total_pieces: number;
+  completed_pieces: number;
+  applyAt: string | null;
+  endedAt: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 function HomeContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [resume, setResume] = useState<Resume | null>(null);
+  const [jds, setJds] = useState<JobDescription[]>([]);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   useEffect(() => {
     // 로그인 상태 확인
@@ -36,6 +60,34 @@ function HomeContent() {
     window.addEventListener('storage', checkAuth);
     return () => window.removeEventListener('storage', checkAuth);
   }, []);
+
+  // 로그인 상태일 때 데이터 불러오기
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchJdsData();
+    }
+  }, [isAuthenticated]);
+
+  const fetchJdsData = async () => {
+    try {
+      const accessToken = tokenManager.getAccessToken();
+      const response = await fetch('/api/jds', {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      const data = await response.json();
+      
+      if (data.data) {
+        setResume(data.data.resume);
+        setJds(data.data.jds || []);
+      }
+    } catch (error) {
+      console.error('Failed to fetch jds data:', error);
+    } finally {
+      setIsDataLoaded(true);
+    }
+  };
 
   useEffect(() => {
     const error = searchParams.get('error');
@@ -60,8 +112,21 @@ function HomeContent() {
     }
   }, [searchParams]);
 
-  const handleJobClick = () => {
-    router.push("/job/1");
+  const handleJobClick = (jdId: number) => {
+    router.push(`/job/${jdId}`);
+  };
+
+  const calculateDDay = (endedAt: string) => {
+    const endDate = new Date(endedAt);
+    const today = new Date();
+    const diffTime = endDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 0 ? diffDays : 0;
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일`;
   };
 
   // 로딩 중
@@ -76,22 +141,46 @@ function HomeContent() {
         <Header backgroundColor="white" showLogout={true} />
         <main className={mainStyles.main}>
           <div className={mainStyles.container}>
-            <ResumeRegistration />
+            {isDataLoaded ? (
+              <ResumeRegistration 
+                hasResume={!!resume} 
+                resumeId={resume?.resumeId} 
+                resumeTitle={resume?.title}
+                resumeUpdatedAt={resume?.updatedAt}
+              />
+            ) : (
+              <div className={mainStyles.resumeLoading}>
+                <div className={mainStyles.skeleton} style={{ height: '93px', borderRadius: '12px' }} />
+              </div>
+            )}
             
             <div className={mainStyles.jobSection}>
               <JobAdd />
               
-              {/* Mock job posting */}
-              <JobList
-                title="2025 상반기 신입 개발자 채용"
-                company="카카오"
-                registerDate="2025년 01월 07일"
-                state="default"
-                completedCount="12"
-                totalCount="30"
-                dDay={52}
-                onClick={handleJobClick}
-              />
+              {!isDataLoaded ? (
+                <div className={mainStyles.jobLoading}>
+                  <div className={mainStyles.skeleton} style={{ height: '140px', borderRadius: '12px' }} />
+                  <div className={mainStyles.skeleton} style={{ height: '140px', borderRadius: '12px' }} />
+                </div>
+              ) : jds.length > 0 ? (
+                jds.map((jd) => (
+                  <JobList
+                    key={jd.jd_id}
+                    title={jd.title}
+                    company={jd.companyName}
+                    registerDate={formatDate(jd.createdAt)}
+                    state="default"
+                    completedCount={String(jd.completed_pieces)}
+                    totalCount={String(jd.total_pieces)}
+                    dDay={calculateDDay(jd.endedAt)}
+                    onClick={() => handleJobClick(jd.jd_id)}
+                  />
+                ))
+              ) : (
+                <div style={{ padding: '20px', textAlign: 'center', color: '#666' }}>
+                  등록된 채용공고가 없습니다.
+                </div>
+              )}
             </div>
           </div>
         </main>
