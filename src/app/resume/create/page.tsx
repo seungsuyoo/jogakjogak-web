@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import styles from "./page.module.css";
@@ -12,7 +12,7 @@ import arrowDropDownIcon from "@/assets/images/ic_drop_down.svg";
 import chatInfoIcon from "@/assets/images/ic_chat_info.svg";
 import { tokenManager } from "@/utils/auth";
 
-export default function CreateResumePage() {
+function ResumeCreateContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const resumeId = searchParams.get('id');
@@ -203,5 +203,13 @@ export default function CreateResumePage() {
       </main>
       <Footer />
     </>
+  );
+}
+
+export default function CreateResumePage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResumeCreateContent />
+    </Suspense>
   );
 }
