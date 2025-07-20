@@ -222,8 +222,13 @@
   margin-top: 8px;
 }
 
-.completeButton:hover {
+.completeButton:hover:not(:disabled) {
   background-color: var(--primarymain-800);
+}
+
+.completeButton:disabled {
+  background-color: var(--n-400);
+  cursor: not-allowed;
 }
 
 .completeButtonText {

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import styles from "./Header.module.css";
 import logo from "@/assets/images/logo.svg";
 import logoutIcon from "@/assets/images/ic_logout.svg";
@@ -37,7 +38,7 @@ export default function Header({ backgroundColor = "transparent", showLogout = f
   return (
     <>
       <header className={`${styles.header} ${backgroundColor === "white" ? styles.whiteBackground : ""}`}>
-        <div className={styles.logo}>
+        <Link href="/" className={styles.logo}>
           <Image 
             src={logo} 
             alt="조각조각 로고" 
@@ -45,7 +46,7 @@ export default function Header({ backgroundColor = "transparent", showLogout = f
             height={25.11}
             priority
           />
-        </div>
+        </Link>
         {showLogout ? (
           <button className={styles.logoutButton} onClick={handleLogoutClick}>
             <Image 

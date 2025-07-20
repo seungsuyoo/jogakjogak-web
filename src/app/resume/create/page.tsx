@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import styles from "./page.module.css";
@@ -22,14 +22,7 @@ export default function CreateResumePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // resumeId가 있으면 기존 이력서 불러오기
-  useEffect(() => {
-    if (resumeId) {
-      fetchResume();
-    }
-  }, [resumeId]);
-
-  const fetchResume = async () => {
+  const fetchResume = useCallback(async () => {
     setIsLoading(true);
     try {
       const accessToken = tokenManager.getAccessToken();
@@ -51,7 +44,14 @@ export default function CreateResumePage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [resumeId]);
+
+  // resumeId가 있으면 기존 이력서 불러오기
+  useEffect(() => {
+    if (resumeId) {
+      fetchResume();
+    }
+  }, [resumeId, fetchResume]);
 
   const handleBack = () => {
     router.back();

@@ -7,19 +7,28 @@ interface Props {
   maxLength?: number;
   placeholder?: string;
   className?: string;
+  initialValue?: string;
+  onChange?: (value: string) => void;
 }
 
 export function MemoBox({ 
   maxLength = 1000, 
   placeholder = "해당 조각에 대해 메모해보세요.",
-  className = ""
+  className = "",
+  initialValue = "",
+  onChange
 }: Props) {
-  const [text, setText] = useState("");
+  const [text, setText] = useState(initialValue);
+  
+  React.useEffect(() => {
+    setText(initialValue);
+  }, [initialValue]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newText = e.target.value;
     if (newText.length <= maxLength) {
       setText(newText);
+      onChange?.(newText);
     }
   };
 
