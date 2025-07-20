@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useReducer } from "react";
-import Image from "next/image";
 import styles from "./JobList.module.css";
 import { ProgressBar } from "./ProgressBar";
 
@@ -17,7 +16,12 @@ interface Props {
   onClick?: () => void;
 }
 
-function reducer(state: any, action: any) {
+interface State {
+  state: string;
+  originalState: string;
+}
+
+function reducer(state: State, action: string): State {
   switch (action) {
     case "mouse_enter":
       return {

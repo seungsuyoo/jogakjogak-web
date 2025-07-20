@@ -9,7 +9,6 @@ interface Props {
 }
 
 export function DDayChip({ 
-  alarm = "off", 
   state = "default", 
   className = "",
   dDay = 52 

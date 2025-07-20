@@ -23,7 +23,7 @@ export function JogakDetailModal({
   onClick,
   checkboxColor = "#D9A9F9",
   completedAt,
-  description = "JD에서 요구한 1~3년 경력에 부합하도록, 'Moneed' 프로젝트와 'SnapX' 인턴십을 포함한 총 경력기간을 명확히 표기.",
+  description,
   onEdit,
   onDelete,
   onMemoChange
