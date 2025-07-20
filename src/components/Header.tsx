@@ -24,12 +24,14 @@ export default function Header({ backgroundColor = "transparent", showLogout = f
     setIsLoginModalOpen(false);
   };
 
-  const handleLogoutClick = async () => {
-    try {
-      await logout();
-    } catch (error) {
+  const handleLogoutClick = () => {
+    // 즉시 UI 업데이트를 위해 홈으로 이동
+    window.location.href = '/';
+    
+    // 백그라운드에서 로그아웃 처리
+    logout().catch(error => {
       console.error('Logout failed:', error);
-    }
+    });
   };
 
   return (

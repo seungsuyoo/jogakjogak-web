@@ -99,6 +99,9 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}): Pro
 
 // 로그아웃 함수
 export async function logout() {
+  // 즉시 토큰 제거
+  tokenManager.removeAccessToken();
+  
   try {
     const refreshToken = await tokenManager.getRefreshToken();
     
@@ -114,8 +117,5 @@ export async function logout() {
     }
   } catch (error) {
     console.error('Logout error:', error);
-  } finally {
-    tokenManager.removeAccessToken();
-    window.location.href = '/';
   }
 }
