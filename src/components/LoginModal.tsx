@@ -28,6 +28,11 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     window.location.href = `${apiUrl}/oauth2/authorization/kakao`;
   };
 
+  const handleGoogleLogin = () => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://www.jogakjogak.com';
+    window.location.href = `${apiUrl}/oauth2/authorization/google`;
+  };
+
   return (
     <div className={styles.modalBackdrop} onClick={handleBackdropClick}>
       <div className={styles.modalContent}>
@@ -40,7 +45,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             </div>
             
             <div className={styles.buttonContainer}>
-              <button className={styles.googleButton}>
+              <button className={styles.googleButton} onClick={handleGoogleLogin}>
                 <Image src={googleIcon} alt="Google" width={18} height={18} />
                 <span>Google 계정으로 시작하기</span>
               </button>
@@ -84,7 +89,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             </div>
             
             <div className={styles.mobileButtons}>
-              <button className={styles.googleButton}>
+              <button className={styles.googleButton} onClick={handleGoogleLogin}>
                 <Image src={googleIcon} alt="Google" width={18} height={18} />
                 <span>Google 계정으로 시작하기</span>
               </button>
