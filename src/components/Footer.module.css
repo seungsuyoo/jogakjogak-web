@@ -1,7 +1,6 @@
 .footer {
   width: 100%;
   background-color: var(--n-0);
-  margin-top: 88px;
 }
 
 .container {
@@ -116,6 +115,8 @@
   line-height: var(--body-2-normal-regular-line-height);
   white-space: nowrap;
   transition: color 0.2s ease;
+  border: none;
+  background: none;
 }
 
 .withdrawLink:hover {
@@ -218,6 +219,8 @@
     font-weight: var(--label-2-medium-font-weight);
     letter-spacing: var(--label-2-medium-letter-spacing);
     line-height: var(--label-2-medium-line-height);
+    border: none;
+    background: none;
   }
 
   .scrollToTop {
