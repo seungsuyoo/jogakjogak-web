@@ -13,6 +13,13 @@
   transition: all 0.2s ease;
 }
 
+@media (max-width: 768px) {
+  .jobList {
+    max-width: 100%;
+    width: calc(100% - 32px);
+  }
+}
+
 .frame {
   align-items: flex-start;
   align-self: stretch;
@@ -298,7 +305,7 @@
   background-color: var(--n-0);
   border: 1px solid;
   border-color: var(--n-50);
-  box-shadow: 0px 2px 8px #5d9cfb0a;
+  box-shadow: 0 2px 8px #5d9cfb0a;
 }
 
 .state-dayover {
