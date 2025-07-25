@@ -77,7 +77,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 14px 40px;
+  padding: 14px 0;
   border-radius: 6px;
   border: none;
   cursor: pointer;

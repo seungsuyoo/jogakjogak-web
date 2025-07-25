@@ -14,7 +14,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 24px;
+  margin-bottom: 8px;
   height: 48px;
 }
 
@@ -101,7 +101,7 @@
   gap: 8px;
   padding: 10px 16px;
   position: relative;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
 }
 
 .jobDetailsTop {
@@ -205,7 +205,7 @@
   line-clamp: 1;
   color: var(--n-950);
   display: -webkit-box;
-  display: box;
+  display: flex;
   font-family: var(--heading-2-bold-font-family);
   font-size: var(--heading-2-bold-font-size);
   font-style: var(--heading-2-bold-font-style);
@@ -226,7 +226,7 @@
   line-clamp: 1;
   color: var(--n-800);
   display: -webkit-box;
-  display: box;
+  display: flex;
   font-family: var(--body-2-normal-medium-font-family);
   font-size: var(--body-2-normal-medium-font-size);
   font-style: var(--body-2-normal-medium-font-style);
@@ -376,10 +376,6 @@
     gap: 8px;
   }
 
-  .actionButton {
-    display: none;
-  }
-
   .progressTracker {
     flex-direction: column;
     gap: 16px;
@@ -400,41 +396,37 @@
   }
 
   .jobDetailsTop {
-    flex-direction: column;
-    gap: 8px;
-    align-items: flex-start;
+    gap: 10px;
   }
 
-  .jobDetailsLeft,
-  .jobDetailsRight {
-    width: 100%;
+  .jobDetailsLeft {
+    gap: 10px;
   }
 
   .jobDetailsBottom {
-    flex-direction: column;
-    gap: 4px;
-    align-items: flex-start;
+    gap: 16px;
   }
 }
 
 /* Jogak Categories */
 .jogakCategories {
   display: flex;
-  gap: 24px;
-  margin-top: 24px;
+  gap: 16px;
+  margin-top: 12px;
   width: 100%;
   justify-content: center;
 }
 
 .jogakCategoryInstance {
   width: 100%;
-  max-width: 400px;
   flex: 1;
 }
 
 @media (max-width: 768px) {
   .jogakCategories {
     flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
   }
 }
 

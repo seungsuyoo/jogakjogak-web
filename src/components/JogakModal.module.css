@@ -62,7 +62,7 @@
   line-clamp: 1;
   color: var(--n-900);
   display: -webkit-box;
-  display: box;
+  display: flex;
   font-family: var(--headline-2-bold-font-family);
   font-size: var(--headline-2-bold-font-size);
   font-style: var(--headline-2-bold-font-style);
