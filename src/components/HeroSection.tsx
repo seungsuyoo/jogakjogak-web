@@ -3,13 +3,15 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './HeroSection.module.css';
-import LoginModal from './LoginModal';
 import { tokenManager } from '@/utils/auth';
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  onLoginClick?: () => void;
+}
+
+export default function HeroSection({ onLoginClick }: HeroSectionProps) {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   useEffect(() => {
     const checkAuth = () => {
@@ -26,12 +28,8 @@ export default function HeroSection() {
     if (isAuthenticated) {
       router.push('/dashboard');
     } else {
-      setIsLoginModalOpen(true);
+      onLoginClick?.();
     }
-  };
-
-  const handleCloseModal = () => {
-    setIsLoginModalOpen(false);
   };
   return (
     <section className={styles.hero}>
@@ -47,7 +45,6 @@ export default function HeroSection() {
       <button className={styles.ctaButton} onClick={handleCtaClick}>
         지금 취업 성공하기
       </button>
-      <LoginModal isOpen={isLoginModalOpen} onClose={handleCloseModal} />
     </section>
   );
 }

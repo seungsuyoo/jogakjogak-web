@@ -8,6 +8,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
 import FeatureSection from "@/components/FeatureSection";
+import LoginModal from "@/components/LoginModal";
 import section1 from "@/assets/images/section1.png";
 import section2 from "@/assets/images/section2.png";
 import section3 from "@/assets/images/section3.png";
@@ -15,6 +16,7 @@ import section3 from "@/assets/images/section3.png";
 function HomeContent() {
   const searchParams = useSearchParams();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   useEffect(() => {
     // 로그인 상태 확인
@@ -58,7 +60,7 @@ function HomeContent() {
     <div className={styles.container}>
       <Header backgroundColor="transparent" showLogout={!!isAuthenticated} />
       
-      <HeroSection />
+      <HeroSection onLoginClick={() => setIsLoginModalOpen(true)} />
       
       <FeatureSection
         image={section1}
@@ -83,6 +85,7 @@ function HomeContent() {
       />
 
       <Footer />
+      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
     </div>
   );
 }
