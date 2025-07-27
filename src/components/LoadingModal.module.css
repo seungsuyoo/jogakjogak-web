@@ -1,0 +1,160 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  position: relative;
+  width: 355px;
+  min-height: 528px;
+  background-color: var(--primarymain-100);
+  border-radius: 24px;
+  padding: 55px 16px 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loadingIndicator {
+  width: 90px;
+  height: 90px;
+  background-color: var(--primarymain-200);
+  border-radius: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.dots {
+  position: relative;
+  width: 40px;
+  height: 8px;
+}
+
+.dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: var(--primaryjogak-1);
+  border-radius: 4px;
+}
+
+.dot1 {
+  left: 0;
+  animation: dotJump 1.5s ease-in-out infinite;
+  animation-delay: 0.1s;
+}
+
+.dot2 {
+  left: 16px;
+  animation: dotJump 1.5s ease-in-out infinite;
+  animation-delay: 0s;
+}
+
+.dot3 {
+  left: 32px;
+  animation: dotJump 1.5s ease-in-out infinite;
+  animation-delay: -0.1s;
+}
+
+@keyframes dotJump {
+  0%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-12px);
+  }
+}
+
+.checkIcon {
+  animation: checkAppear 0.3s ease-out;
+}
+
+@keyframes checkAppear {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.waitMessage {
+  width: 100%;
+  margin: 0 0 12px 0;
+  color: var(--n-900);
+  font-family: var(--body-1-normal-medium-font-family);
+  font-weight: var(--body-1-normal-medium-font-weight);
+  font-size: var(--body-1-normal-medium-font-size);
+  line-height: var(--body-1-normal-medium-line-height);
+  letter-spacing: var(--body-1-normal-medium-letter-spacing);
+  text-align: center;
+}
+
+.aiMessage {
+  width: 100%;
+  margin: 0 0 24px 0;
+  font-family: var(--title-3-bold-font-family);
+  font-weight: var(--title-3-bold-font-weight);
+  font-size: var(--title-3-bold-font-size);
+  line-height: var(--title-3-bold-line-height);
+  letter-spacing: var(--title-3-bold-letter-spacing);
+  text-align: center;
+}
+
+.text {
+  color: #344251;
+}
+
+.highlight {
+  color: #3483fa;
+}
+
+.tipCard {
+  position: relative;
+  width: 323px;
+  padding: 25px 0 48px;
+  background-color: var(--n-0);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tipLabel {
+  margin-bottom: 18px;
+  font-family: var(--body-1-normal-bold-font-family);
+  font-weight: var(--body-1-normal-bold-font-weight);
+  color: var(--primaryjogak-1);
+  font-size: var(--body-1-normal-bold-font-size);
+  line-height: var(--body-1-normal-bold-line-height);
+  letter-spacing: var(--body-1-normal-bold-letter-spacing);
+}
+
+.tipContent {
+  width: 100%;
+  margin: 0;
+  padding: 0 20px;
+  color: var(--n-700);
+  font-family: var(--body-1-reading-medium-font-family);
+  font-weight: var(--body-1-reading-medium-font-weight);
+  font-size: var(--body-1-reading-medium-font-size);
+  line-height: var(--body-1-reading-medium-line-height);
+  letter-spacing: var(--body-1-reading-medium-letter-spacing);
+  text-align: center;
+  white-space: pre-wrap;
+}
