@@ -1,0 +1,81 @@
+.main {
+  min-height: 100vh;
+  padding-top: 64px; /* Header height */
+  background-color: var(--n-100);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 24px 0;
+  max-width: 1560px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.container p {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+}
+
+.jobSection {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  flex-wrap: wrap;
+  margin: 0 20px
+}
+
+@media (max-width: 768px) {
+  .jobSection {
+    flex-direction: column;
+  }
+}
+
+/* Skeleton loading styles */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--n-200) 25%,
+    var(--n-300) 50%,
+    var(--n-200) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.resumeLoading {
+  width: 100%;
+  max-width: 1560px;
+}
+
+.jobLoading {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .jobSection {
+    margin: 0 16px;
+  }
+}
