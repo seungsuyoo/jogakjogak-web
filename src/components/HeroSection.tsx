@@ -1,6 +1,38 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './HeroSection.module.css';
+import LoginModal from './LoginModal';
+import { tokenManager } from '@/utils/auth';
 
 export default function HeroSection() {
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = tokenManager.getAccessToken();
+      setIsAuthenticated(!!token);
+    };
+
+    checkAuth();
+    window.addEventListener('storage', checkAuth);
+    return () => window.removeEventListener('storage', checkAuth);
+  }, []);
+
+  const handleCtaClick = () => {
+    if (isAuthenticated) {
+      router.push('/dashboard');
+    } else {
+      setIsLoginModalOpen(true);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsLoginModalOpen(false);
+  };
   return (
     <section className={styles.hero}>
       <div className={styles.badge}>
@@ -12,7 +44,10 @@ export default function HeroSection() {
       <p className={styles.description}>
         AI가 함께하는 나의 취업 성공 투두 리스트
       </p>
-      <button className={styles.ctaButton}>지금 취업 성공하기</button>
+      <button className={styles.ctaButton} onClick={handleCtaClick}>
+        지금 취업 성공하기
+      </button>
+      <LoginModal isOpen={isLoginModalOpen} onClose={handleCloseModal} />
     </section>
   );
 }
