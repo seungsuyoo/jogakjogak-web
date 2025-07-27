@@ -9,6 +9,7 @@ import { ResumeRegistration } from "@/components/ResumeRegistration";
 import { JobAdd } from "@/components/JobAdd";
 import { JobList } from "@/components/JobList";
 import { tokenManager } from "@/utils/auth";
+import NoResumeModal from "@/components/NoResumeModal";
 
 interface Resume {
   resumeId: number;
@@ -37,6 +38,7 @@ export default function DashboardPage() {
   const [resume, setResume] = useState<Resume | null>(null);
   const [jds, setJds] = useState<JobDescription[]>([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const [showNoResumeModal, setShowNoResumeModal] = useState(false);
 
   useEffect(() => {
     // 로그인 상태 확인
@@ -78,6 +80,11 @@ export default function DashboardPage() {
       if (data.data) {
         setResume(data.data.resume);
         setJds(data.data.jds || []);
+        
+        // 이력서가 없는 경우 모달 표시
+        if (!data.data.resume) {
+          setShowNoResumeModal(true);
+        }
       }
     } catch (error) {
       console.error('Failed to fetch jds data:', error);
@@ -101,6 +108,12 @@ export default function DashboardPage() {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일`;
+  };
+
+  const handleResumeRegisterClick = () => {
+    setShowNoResumeModal(false);
+    // 이력서 등록 페이지로 이동
+    router.push('/resume/create');
   };
 
   if (isAuthenticated === null || !isDataLoaded) {
@@ -169,6 +182,12 @@ export default function DashboardPage() {
         </div>
       </main>
       <Footer />
+      
+      <NoResumeModal 
+        isOpen={showNoResumeModal}
+        onClose={() => setShowNoResumeModal(false)}
+        onRegisterClick={handleResumeRegisterClick}
+      />
     </>
   );
 }

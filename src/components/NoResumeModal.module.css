@@ -1,0 +1,102 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  width: 355px;
+  gap: 16px;
+  padding: 24px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0 0 0 8px;
+  width: 100%;
+}
+
+.title {
+  margin: 0;
+  margin-top: -1px;
+  font-size: var(--headline-2-bold-font-size);
+  letter-spacing: var(--headline-2-bold-letter-spacing);
+  line-height: var(--headline-2-bold-line-height);
+  font-family: var(--headline-2-bold-font-family);
+  font-weight: var(--headline-2-bold-font-weight);
+  font-style: var(--headline-2-bold-font-style);
+}
+
+.highlight {
+  color: #3483fa;
+}
+
+.text {
+  color: #4f5e6f;
+}
+
+.closeButton {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.contentArea {
+  height: 246px;
+  background-color: var(--n-50);
+  border-radius: 16px;
+  border: 1px solid var(--primarymain-200);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.emptyImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.registerButton {
+  width: 100%;
+  height: 56px;
+  background-color: var(--primaryjogak-1);
+  border-radius: 10px;
+  border: none;
+  color: var(--n-100);
+  font-size: var(--body-1-normal-bold-font-size);
+  text-align: center;
+  letter-spacing: var(--body-1-normal-bold-letter-spacing);
+  line-height: var(--body-1-normal-bold-line-height);
+  font-family: var(--body-1-normal-bold-font-family);
+  font-weight: var(--body-1-normal-bold-font-weight);
+  font-style: var(--body-1-normal-bold-font-style);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.registerButton:hover {
+  background-color: var(--primarymain-800);
+}
