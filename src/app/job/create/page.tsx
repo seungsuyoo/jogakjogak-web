@@ -8,6 +8,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import arrowBackIcon from "@/assets/images/ic_arrow_back.svg";
 import { tokenManager } from "@/utils/auth";
+import LoadingModal from "@/components/LoadingModal";
 
 export default function CreateJobPage() {
   const router = useRouter();
@@ -18,6 +19,8 @@ export default function CreateJobPage() {
   const [jobDescription, setJobDescription] = useState("");
   const [jobUrl, setJobUrl] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
+  const [nextJdId, setNextJdId] = useState<number | null>(null);
 
   const handleBack = () => {
     router.back();
@@ -65,17 +68,23 @@ export default function CreateJobPage() {
       const data = await response.json();
 
       if (response.ok) {
-        alert("채용공고가 성공적으로 등록되었습니다.\nAI가 분석하여 맞춤형 투두리스트를 생성했습니다.");
-        // JD 상세 페이지로 이동
-        router.push(`/job/${data.data.jdId}`);
+        setNextJdId(data.data.jdId);
+        setIsComplete(true);
+        // LoadingModal의 onCompleteAnimationEnd에서 페이지 이동 처리
       } else {
         alert(data.message || "채용공고 등록에 실패했습니다.");
+        setIsSubmitting(false);
       }
     } catch (error) {
       console.error('JD submission error:', error);
       alert("채용공고 등록 중 오류가 발생했습니다.");
-    } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleCompleteAnimationEnd = () => {
+    if (nextJdId) {
+      router.push(`/job/${nextJdId}`);
     }
   };
 
@@ -180,6 +189,11 @@ export default function CreateJobPage() {
         </div>
       </main>
       <Footer />
+      <LoadingModal 
+        isOpen={isSubmitting} 
+        isComplete={isComplete}
+        onCompleteAnimationEnd={handleCompleteAnimationEnd}
+      />
     </>
   );
 }
