@@ -75,9 +75,6 @@
 }
 
 @media (max-width: 768px) {
-  .jobLoading {
-    flex-direction: column;
-  }
   .jobSection {
     margin: 0 16px;
   }

@@ -41,7 +41,7 @@ function KakaoCallbackContent() {
         if (data.code === 200 && data.data?.access_token) {
           // access_token을 localStorage에 저장
           tokenManager.setAccessToken(data.data.access_token);
-          router.push('/');
+          router.push('/dashboard');
         } else {
           throw new Error(data.message || 'Failed to get tokens');
         }

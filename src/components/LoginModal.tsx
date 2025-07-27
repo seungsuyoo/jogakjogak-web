@@ -24,12 +24,12 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   };
 
   const handleKakaoLogin = () => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://www.jogakjogak.com';
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.jogakjogak.com';
     window.location.href = `${apiUrl}/oauth2/authorization/kakao`;
   };
 
   const handleGoogleLogin = () => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://www.jogakjogak.com';
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.jogakjogak.com';
     window.location.href = `${apiUrl}/oauth2/authorization/google`;
   };
 
