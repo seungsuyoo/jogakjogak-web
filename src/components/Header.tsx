@@ -38,7 +38,7 @@ export default function Header({ backgroundColor = "transparent", showLogout = f
   return (
     <>
       <header className={`${styles.header} ${backgroundColor === "white" ? styles.whiteBackground : ""}`}>
-        <Link href="/" className={styles.logo}>
+        <Link href={showLogout ? "/dashboard" : "/"} className={styles.logo}>
           <Image 
             src={logo} 
             alt="조각조각 로고" 
