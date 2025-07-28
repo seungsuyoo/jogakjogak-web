@@ -161,6 +161,11 @@
 .helpSection {
   background-color: var(--n-0);
   border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.helpHeader {
   padding: 24px;
   display: flex;
   justify-content: space-between;
@@ -169,7 +174,7 @@
   transition: background-color 0.2s;
 }
 
-.helpSection:hover {
+.helpHeader:hover {
   background-color: var(--n-50);
 }
 
@@ -204,6 +209,55 @@
 
 .dropdownIcon.rotated {
   transform: rotate(180deg);
+}
+
+.helpExpanded {
+  padding: 0 24px 24px 24px;
+  background-color: var(--n-0);
+  animation: slideDown 0.3s ease-out;
+  overflow: hidden;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+    padding-bottom: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 1000px;
+    padding-bottom: 24px;
+  }
+}
+
+.helpTitle {
+  font-family: var(--headline-1-bold-font-family);
+  font-size: var(--headline-1-bold-font-size);
+  font-weight: var(--headline-1-bold-font-weight);
+  color: var(--n-900);
+  margin-bottom: 20px;
+  line-height: var(--headline-1-bold-line-height);
+}
+
+.helpGuide {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.helpGuide p {
+  font-family: var(--body-2-normal-regular-font-family);
+  font-size: var(--body-2-normal-regular-font-size);
+  font-weight: var(--body-2-normal-regular-font-weight);
+  color: var(--n-900);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.helpSubtext {
+  color: var(--n-700) !important;
+  margin-left: 16px !important;
 }
 
 /* Mobile responsive */
