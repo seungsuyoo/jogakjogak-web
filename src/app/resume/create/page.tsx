@@ -97,7 +97,7 @@ function ResumeCreateContent() {
 
       if (response.ok) {
         alert(resumeId ? "이력서가 성공적으로 수정되었습니다." : "이력서가 성공적으로 등록되었습니다.");
-        router.push('/');
+        router.push('/dashboard');
       } else if (response.status === 409) {
         alert("이미 이력서가 등록되어 있습니다.");
       } else {

@@ -18,6 +18,7 @@ import contentEmphasisIcon from "@/assets/images/content-emphasis-and-reorganiza
 import scheduleIcon from "@/assets/images/employment-schedule-and-others.svg";
 import { tokenManager } from "@/utils/auth";
 import { StaticImageData } from "next/image";
+import NotificationModal from "@/components/NotificationModal";
 
 interface TodoItem {
   checklist_id: number;
@@ -86,6 +87,7 @@ export default function JobDetailPage() {
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const moreMenuRef = useRef<HTMLDivElement>(null);
+  const [showNotificationModal, setShowNotificationModal] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -237,44 +239,53 @@ export default function JobDetailPage() {
     }, 800);
   }, [jdDetail, saveMemo]);
 
-  // 알림 토글 함수
-  const toggleAlarm = async () => {
+  // 알림 버튼 클릭 핸들러
+  const handleAlarmButtonClick = () => {
+    setShowNotificationModal(true);
+  };
+
+  // 알림 모달 확인 핸들러
+  const handleNotificationConfirm = async (isEnabled: boolean) => {
+    setShowNotificationModal(false);
+    
     if (!jdDetail || isTogglingAlarm) return;
     
-    setIsTogglingAlarm(true);
-    const newAlarmState = !jdDetail.alarmOn;
-    setJdDetail({ ...jdDetail, alarmOn: newAlarmState });
-    
-    try {
-      const accessToken = tokenManager.getAccessToken();
-      const response = await fetch(`/api/jds/${jdId}/alarm`, {
-        method: 'PATCH',
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          isAlarmOn: newAlarmState
-        })
-      });
+    // 알림 상태가 변경되는 경우에만 API 호출
+    if (jdDetail.alarmOn !== isEnabled) {
+      setIsTogglingAlarm(true);
+      setJdDetail({ ...jdDetail, alarmOn: isEnabled });
+      
+      try {
+        const accessToken = tokenManager.getAccessToken();
+        const response = await fetch(`/api/jds/${jdId}/alarm`, {
+          method: 'PATCH',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            isAlarmOn: isEnabled
+          })
+        });
 
-      if (!response.ok) {
-        // 실패 시 원래 상태로 복원
-        setJdDetail({ ...jdDetail, alarmOn: !newAlarmState });
-        console.error('Failed to toggle alarm');
-      } else {
-        const responseData = await response.json();
-        // 백엔드 응답에서 실제 상태로 업데이트
-        if (responseData.data) {
-          setJdDetail({ ...jdDetail, alarmOn: responseData.data.alarmOn });
+        if (!response.ok) {
+          // 실패 시 원래 상태로 복원
+          setJdDetail({ ...jdDetail, alarmOn: !isEnabled });
+          console.error('Failed to toggle alarm');
+        } else {
+          const responseData = await response.json();
+          // 백엔드 응답에서 실제 상태로 업데이트
+          if (responseData.data) {
+            setJdDetail({ ...jdDetail, alarmOn: responseData.data.alarmOn });
+          }
         }
+      } catch (error) {
+        // 에러 시 원래 상태로 복원
+        setJdDetail({ ...jdDetail, alarmOn: !isEnabled });
+        console.error('Error toggling alarm:', error);
+      } finally {
+        setIsTogglingAlarm(false);
       }
-    } catch (error) {
-      // 에러 시 원래 상태로 복원
-      setJdDetail({ ...jdDetail, alarmOn: !newAlarmState });
-      console.error('Error toggling alarm:', error);
-    } finally {
-      setIsTogglingAlarm(false);
     }
   };
 
@@ -673,8 +684,8 @@ export default function JobDetailPage() {
               />
             </div>
             <button 
-              className={`${styles.notificationBtn} ${jdDetail.alarmOn ? styles.alarmOn : ''}`}
-              onClick={toggleAlarm}
+              className={styles.notificationBtn}
+              onClick={handleAlarmButtonClick}
               disabled={isTogglingAlarm}
             >
               <Image 
@@ -773,6 +784,14 @@ export default function JobDetailPage() {
           </div>
         </div>
       )}
+      
+      {/* Notification Modal */}
+      <NotificationModal
+        isOpen={showNotificationModal}
+        onClose={() => setShowNotificationModal(false)}
+        onConfirm={handleNotificationConfirm}
+        initialEnabled={jdDetail.alarmOn}
+      />
     </>
   );
 }
