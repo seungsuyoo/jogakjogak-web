@@ -1,0 +1,42 @@
+.scrollToTop {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background-color: var(--primarymain-600);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 9999;
+  box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.12);
+}
+
+.scrollToTop.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.scrollToTop:hover {
+  background-color: var(--primarymain-700);
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.16);
+}
+
+.scrollToTop:active {
+  transform: translateY(0);
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+  .scrollToTop {
+    bottom: 20px;
+    right: 16px;
+  }
+}
