@@ -19,6 +19,18 @@
   box-shadow: inset 0 0 0 1px var(--primarymain-400);
 }
 
+/* With resume styles */
+.jobAdd.hasResume {
+  background-color: var(--primarymain-200);
+  border: 1px solid var(--primaryjogak-2);
+  box-shadow: none;
+}
+
+.jobAdd.hasResume:hover {
+  background-color: var(--primarymain-300);
+  box-shadow: none;
+}
+
 .desktopContent {
   display: flex;
   flex-direction: column;
@@ -52,6 +64,10 @@
   color: var(--n-500);
 }
 
+.hasResume .textWrapper {
+  color: var(--primarymain-800);
+}
+
 /* Mobile styles */
 @media (max-width: 768px) {
   .jobAdd {
@@ -61,6 +77,10 @@
     padding: 16px 0;
     border: 1px solid var(--primarymain-300);
     box-shadow: none;
+  }
+
+  .jobAdd.hasResume {
+    border: 1px solid var(--primaryjogak-2);
   }
 
   .desktopContent {

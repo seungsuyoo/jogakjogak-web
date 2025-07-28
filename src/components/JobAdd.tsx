@@ -4,26 +4,35 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import styles from "./JobAdd.module.css";
 import addJobIcon from "@/assets/images/add_job.svg";
+import addJobActiveIcon from "@/assets/images/add_job_active.svg";
 
 interface JobAddProps {
   className?: string;
+  hasResume?: boolean;
+  onNoResumeClick?: () => void;
 }
 
 export function JobAdd({ 
-  className = ""
+  className = "",
+  hasResume = false,
+  onNoResumeClick
 }: JobAddProps) {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push("/job/create");
+    if (!hasResume && onNoResumeClick) {
+      onNoResumeClick();
+    } else {
+      router.push("/job/create");
+    }
   };
 
   return (
-    <div className={`${styles.jobAdd} ${className}`} onClick={handleClick}>
+    <div className={`${styles.jobAdd} ${hasResume ? styles.hasResume : ''} ${className}`} onClick={handleClick}>
       {/* Desktop version */}
       <div className={styles.desktopContent}>
         <Image 
-          src={addJobIcon}
+          src={hasResume ? addJobActiveIcon : addJobIcon}
           alt="Add Job"
           width={33.33}
           height={36.67}
@@ -35,7 +44,7 @@ export function JobAdd({
       {/* Mobile version */}
       <div className={styles.mobileContent}>
         <Image 
-          src={addJobIcon}
+          src={hasResume ? addJobActiveIcon : addJobIcon}
           alt="Add Job"
           width={26.67}
           height={29.33}
