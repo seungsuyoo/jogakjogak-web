@@ -19,6 +19,7 @@ import scheduleIcon from "@/assets/images/employment-schedule-and-others.svg";
 import { tokenManager } from "@/utils/auth";
 import { StaticImageData } from "next/image";
 import NotificationModal from "@/components/NotificationModal";
+import Snackbar from "@/components/Snackbar";
 
 interface TodoItem {
   checklist_id: number;
@@ -88,6 +89,7 @@ export default function JobDetailPage() {
   const [isDeleting, setIsDeleting] = useState(false);
   const moreMenuRef = useRef<HTMLDivElement>(null);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
+  const [snackbar, setSnackbar] = useState({ isOpen: false, message: '', type: 'success' as 'success' | 'error' | 'info' });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -529,6 +531,37 @@ export default function JobDetailPage() {
     }
   };
 
+  // 지원 완료 핸들러
+  const handleApplyComplete = async () => {
+    try {
+      const accessToken = tokenManager.getAccessToken();
+      const response = await fetch(`/api/jds/${jdId}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          applyAt: new Date().toISOString()
+        })
+      });
+
+      if (response.ok) {
+        setSnackbar({ isOpen: true, message: '지원 완료로 표시되었습니다.', type: 'success' });
+        // 데이터 다시 불러오기
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      } else {
+        console.error('Failed to mark as applied');
+        setSnackbar({ isOpen: true, message: '지원 완료 처리에 실패했습니다.', type: 'error' });
+      }
+    } catch (error) {
+      console.error('Error marking as applied:', error);
+      setSnackbar({ isOpen: true, message: '지원 완료 처리 중 오류가 발생했습니다.', type: 'error' });
+    }
+  };
+
   const calculateCompletionRate = () => {
     if (!jdDetail || !jdDetail.toDoLists || jdDetail.toDoLists.length === 0) return { completed: 0, total: 0 };
     const total = jdDetail.toDoLists.length;
@@ -625,6 +658,15 @@ export default function JobDetailPage() {
                 {/* More menu dropdown */}
                 {showMoreMenu && (
                   <div className={styles.moreMenu}>
+                    <button 
+                      className={styles.moreMenuItem}
+                      onClick={() => {
+                        setShowMoreMenu(false);
+                        handleApplyComplete();
+                      }}
+                    >
+                      지원 완료
+                    </button>
                     <button 
                       className={styles.moreMenuItem}
                       onClick={() => {
@@ -791,6 +833,14 @@ export default function JobDetailPage() {
         onClose={() => setShowNotificationModal(false)}
         onConfirm={handleNotificationConfirm}
         initialEnabled={jdDetail.alarmOn}
+      />
+      
+      {/* Snackbar */}
+      <Snackbar
+        message={snackbar.message}
+        isOpen={snackbar.isOpen}
+        onClose={() => setSnackbar({ ...snackbar, isOpen: false })}
+        type={snackbar.type}
       />
     </>
   );
