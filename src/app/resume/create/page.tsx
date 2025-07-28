@@ -178,7 +178,7 @@ function ResumeCreateContent() {
                     className={styles.helpIcon}
                   />
                   <span className={styles.helpText}>
-                    이력서에 어떤걸 넣을지 모르겠나요?
+                    {isHelpOpen ? '이력서에 이런 내용을 포함하면 좋아요.' : '이력서에 어떤걸 넣을지 모르겠나요?'}
                   </span>
                 </div>
                 <Image 
@@ -192,7 +192,6 @@ function ResumeCreateContent() {
               
               {isHelpOpen && (
                 <div className={styles.helpExpanded}>
-                  <h3 className={styles.helpTitle}>이력서에 이런 내용을 포함하면 좋아요.</h3>
                   <div className={styles.helpGuide}>
                     <p>간단한 자기소개 문구</p>
                     
