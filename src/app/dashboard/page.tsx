@@ -11,6 +11,7 @@ import { JobList } from "@/components/JobList";
 import { tokenManager } from "@/utils/auth";
 import NoResumeModal from "@/components/NoResumeModal";
 import Snackbar from "@/components/Snackbar";
+import { DeleteConfirmModal } from "@/components/DeleteConfirmModal";
 
 interface Resume {
   resumeId: number;
@@ -41,6 +42,8 @@ export default function DashboardPage() {
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [showNoResumeModal, setShowNoResumeModal] = useState(false);
   const [showNoResumeSnackbar, setShowNoResumeSnackbar] = useState(false);
+  const [deletingJobId, setDeletingJobId] = useState<number | null>(null);
+  const [snackbar, setSnackbar] = useState({ isOpen: false, message: '', type: 'success' as 'success' | 'error' | 'info' });
 
   useEffect(() => {
     // 로그인 상태 확인
@@ -122,6 +125,59 @@ export default function DashboardPage() {
     setShowNoResumeSnackbar(true);
   };
 
+  // 채용공고 삭제 핸들러
+  const handleJobDelete = async (jobId: number) => {
+    try {
+      const accessToken = tokenManager.getAccessToken();
+      const response = await fetch(`/api/jds/${jobId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+
+      if (response.ok) {
+        setSnackbar({ isOpen: true, message: '채용공고가 삭제되었습니다.', type: 'success' });
+        // 목록 새로고침
+        fetchJdsData();
+        setDeletingJobId(null);
+      } else {
+        setSnackbar({ isOpen: true, message: '채용공고 삭제에 실패했습니다.', type: 'error' });
+      }
+    } catch (error) {
+      console.error('Error deleting job:', error);
+      setSnackbar({ isOpen: true, message: '채용공고 삭제 중 오류가 발생했습니다.', type: 'error' });
+    }
+  };
+
+  // 지원 완료 핸들러
+  const handleApplyComplete = async (jobId: number) => {
+    try {
+      const accessToken = tokenManager.getAccessToken();
+      const response = await fetch(`/api/jds/${jobId}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          applyAt: new Date().toISOString()
+        })
+      });
+
+      if (response.ok) {
+        setSnackbar({ isOpen: true, message: '지원 완료로 표시되었습니다.', type: 'success' });
+        // 목록 새로고침
+        fetchJobs();
+      } else {
+        setSnackbar({ isOpen: true, message: '지원 완료 처리에 실패했습니다.', type: 'error' });
+      }
+    } catch (error) {
+      console.error('Error marking as applied:', error);
+      setSnackbar({ isOpen: true, message: '지원 완료 처리 중 오류가 발생했습니다.', type: 'error' });
+    }
+  };
+
   if (isAuthenticated === null || !isDataLoaded) {
     return (
       <>
@@ -177,6 +233,8 @@ export default function DashboardPage() {
                   totalCount={String(jd.total_pieces)}
                   dDay={calculateDDay(jd.endedAt)}
                   onClick={() => handleJobClick(jd.jd_id)}
+                  onApplyComplete={() => handleApplyComplete(jd.jd_id)}
+                  onDelete={() => setDeletingJobId(jd.jd_id)}
                 />
               ))
             )}
@@ -197,6 +255,20 @@ export default function DashboardPage() {
         onClose={() => setShowNoResumeSnackbar(false)}
         type="info"
         duration={3000}
+      />
+      
+      <Snackbar
+        message={snackbar.message}
+        isOpen={snackbar.isOpen}
+        onClose={() => setSnackbar({ ...snackbar, isOpen: false })}
+        type={snackbar.type}
+      />
+      
+      {/* Delete confirmation modal */}
+      <DeleteConfirmModal
+        isOpen={!!deletingJobId}
+        onClose={() => setDeletingJobId(null)}
+        onConfirm={() => deletingJobId && handleJobDelete(deletingJobId)}
       />
     </>
   );
