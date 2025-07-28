@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./JogakDetailModal.module.css";
 
 interface Props {
@@ -30,6 +30,11 @@ export function JogakDetailModal({
 }: Props) {
   const [isExpanded, setIsExpanded] = useState(state === "active" || state === "active-memo");
   const [memo, setMemo] = useState("");
+
+  // state prop이 변경될 때 isExpanded 업데이트
+  useEffect(() => {
+    setIsExpanded(state === "active" || state === "active-memo");
+  }, [state]);
 
   const handleToggleExpand = () => {
     if (state !== "add-custom") {

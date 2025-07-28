@@ -61,6 +61,7 @@ export function JogakCategory({
 }: Props) {
   const [items, setItems] = useState<JogakItem[]>(initialItems);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   // initialItems가 변경될 때 내부 state 업데이트
   useEffect(() => {
@@ -76,12 +77,16 @@ export function JogakCategory({
     onItemToggle?.(itemId);
   };
 
-  const handleModalOpen = () => {
+  const handleModalOpen = (itemId?: string) => {
+    if (itemId) {
+      setSelectedItemId(itemId);
+    }
     setIsModalOpen(true);
   };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
+    setSelectedItemId(null);
   };
 
   return (
@@ -120,7 +125,7 @@ export function JogakCategory({
           viewBox="0 0 24 24" 
           fill="none" 
           className={styles.chevron}
-          onClick={handleModalOpen}
+          onClick={() => handleModalOpen()}
           style={{ cursor: 'pointer' }}
         >
           <path d="M9 18L15 12L9 6" stroke="#94A2B3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -129,19 +134,37 @@ export function JogakCategory({
       
       <div className={`${styles.itemList} ${styles[`state-${state}`]}`}>
         {items.map((item) => (
-          <div key={item.id} className={styles.jogakItem} onClick={() => handleItemToggle(item.id)}>
+          <div key={item.id} className={styles.jogakItem}>
             <div className={styles.itemContent}>
               <div 
                 className={`${styles.checkbox} ${item.completed ? styles.checked : ''}`}
                 style={item.completed ? { borderColor: checkboxColor } : {}}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleItemToggle(item.id);
+                }}
               >
                 {item.completed && (
                   <div className={styles.checkSquare} style={{ backgroundColor: checkboxColor }} />
                 )}
               </div>
-              <div className={styles.itemText}>{item.text}</div>
+              <div 
+                className={styles.itemText} 
+                onClick={() => handleModalOpen(item.id)}
+                style={{ cursor: 'pointer' }}
+              >
+                {item.text}
+              </div>
             </div>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className={styles.itemChevron}>
+            <svg 
+              width="24" 
+              height="24" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              className={styles.itemChevron}
+              onClick={() => handleModalOpen(item.id)}
+              style={{ cursor: 'pointer' }}
+            >
               <path d="M9 18L15 12L9 6" stroke="#B0BDCB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
@@ -161,6 +184,7 @@ export function JogakCategory({
         onItemAdd={onItemAdd}
         category={category}
         categories={categories}
+        selectedItemId={selectedItemId}
       />
     </div>
   );
