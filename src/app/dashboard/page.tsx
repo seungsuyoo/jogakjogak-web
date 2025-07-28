@@ -10,6 +10,7 @@ import { JobAdd } from "@/components/JobAdd";
 import { JobList } from "@/components/JobList";
 import { tokenManager } from "@/utils/auth";
 import NoResumeModal from "@/components/NoResumeModal";
+import Snackbar from "@/components/Snackbar";
 
 interface Resume {
   resumeId: number;
@@ -39,6 +40,7 @@ export default function DashboardPage() {
   const [jds, setJds] = useState<JobDescription[]>([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [showNoResumeModal, setShowNoResumeModal] = useState(false);
+  const [showNoResumeSnackbar, setShowNoResumeSnackbar] = useState(false);
 
   useEffect(() => {
     // 로그인 상태 확인
@@ -116,6 +118,10 @@ export default function DashboardPage() {
     router.push('/resume/create');
   };
 
+  const handleNoResumeClick = () => {
+    setShowNoResumeSnackbar(true);
+  };
+
   if (isAuthenticated === null || !isDataLoaded) {
     return (
       <>
@@ -127,7 +133,7 @@ export default function DashboardPage() {
             </div>
             
             <div className={styles.jobSection}>
-              <JobAdd />
+              <JobAdd hasResume={!!resume} onNoResumeClick={handleNoResumeClick} />
               <div className={styles.jobLoading}>
                 <div className={styles.skeleton} style={{ height: '140px', borderRadius: '12px' }} />
                 <div className={styles.skeleton} style={{ height: '140px', borderRadius: '12px' }} />
@@ -157,9 +163,9 @@ export default function DashboardPage() {
           />
           
           <div className={styles.jobSection}>
-            <JobAdd />
+            <JobAdd hasResume={!!resume} onNoResumeClick={handleNoResumeClick} />
             
-            {jds.length > 0 ? (
+            {jds.length > 0 && (
               jds.map((jd) => (
                 <JobList
                   key={jd.jd_id}
@@ -173,10 +179,6 @@ export default function DashboardPage() {
                   onClick={() => handleJobClick(jd.jd_id)}
                 />
               ))
-            ) : (
-              <div style={{ padding: '20px', textAlign: 'center', color: '#666' }}>
-                등록된 채용공고가 없습니다.
-              </div>
             )}
           </div>
         </div>
@@ -187,6 +189,14 @@ export default function DashboardPage() {
         isOpen={showNoResumeModal}
         onClose={() => setShowNoResumeModal(false)}
         onRegisterClick={handleResumeRegisterClick}
+      />
+      
+      <Snackbar
+        message="채용공고를 추가하기 전에 먼저 이력서를 등록해주세요."
+        isOpen={showNoResumeSnackbar}
+        onClose={() => setShowNoResumeSnackbar(false)}
+        type="info"
+        duration={3000}
       />
     </>
   );
