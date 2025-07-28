@@ -39,6 +39,7 @@ interface Props {
   onItemAdd?: (data: { category: string; title: string; content: string }) => void;
   category?: string;
   categories?: { value: string; label: string }[];
+  selectedItemId?: string | null;
 }
 
 export function JogakModal({
@@ -53,10 +54,22 @@ export function JogakModal({
   onItemDelete,
   onItemAdd,
   category,
-  categories = []
+  categories = [],
+  selectedItemId
 }: Props) {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<JogakItem | null>(null);
+  const [openDetailItemId, setOpenDetailItemId] = useState<string | null>(null);
+
+  // selectedItemId가 변경되면 해당 아이템의 상세 모달 열기
+  React.useEffect(() => {
+    if (selectedItemId && isOpen) {
+      const item = items.find(item => item.id === selectedItemId);
+      if (item) {
+        setOpenDetailItemId(selectedItemId);
+      }
+    }
+  }, [selectedItemId, isOpen, items]);
 
   const handleEditClick = (item: JogakItem) => {
     setEditingItem(item);
@@ -124,7 +137,7 @@ export function JogakModal({
               {items.map((item) => (
                 <JogakDetailModal
                   key={item.id}
-                  state={item.completed ? "done" : "default"}
+                  state={item.completed ? "done" : (openDetailItemId === item.id ? "active" : "default")}
                   text={item.text}
                   description={item.content}
                   onClick={() => onItemToggle?.(item.id)}
