@@ -7,10 +7,6 @@ import styles from "./Footer.module.css";
 import { tokenManager } from "@/utils/auth";
 
 export default function Footer() {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   const handleWithdrawal = async () => {
     const confirmed = confirm(
       "정말로 탈퇴하시겠습니까?\n\n탈퇴 시 모든 데이터가 삭제되며 복구할 수 없습니다."
@@ -87,36 +83,6 @@ export default function Footer() {
           {/* Withdraw link */}
           <button onClick={handleWithdrawal} className={styles.withdrawLink}>탈퇴하기</button>
         </div>
-
-        {/* Scroll to top button */}
-        <button
-          className={styles.scrollToTop}
-          onClick={scrollToTop}
-          aria-label="맨 위로 가기"
-        >
-          <svg
-            width="32"
-            height="32"
-            viewBox="0 0 32 32"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M16 26V6"
-              stroke="white"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M8 14L16 6L24 14"
-              stroke="white"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
       </div>
     </footer>
   );

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const pretendard = localFont({
   src: [
@@ -42,6 +43,7 @@ export default function RootLayout({
     <html lang="ko">
       <body className={pretendard.variable}>
         {children}
+        <ScrollToTop />
       </body>
     </html>
   );
