@@ -59,17 +59,26 @@ export function JogakModal({
 }: Props) {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<JogakItem | null>(null);
-  const [openDetailItemId, setOpenDetailItemId] = useState<string | null>(null);
+  const [expandedItemId, setExpandedItemId] = useState<string | null>(null);
 
-  // selectedItemId가 변경되면 해당 아이템의 상세 모달 열기
+  // selectedItemId가 변경되면 해당 아이템 확장
   React.useEffect(() => {
     if (selectedItemId && isOpen) {
-      const item = items.find(item => item.id === selectedItemId);
-      if (item) {
-        setOpenDetailItemId(selectedItemId);
-      }
+      setExpandedItemId(selectedItemId);
     }
-  }, [selectedItemId, isOpen, items]);
+  }, [selectedItemId, isOpen]);
+
+  // 모달이 닫힐 때 확장 상태 초기화
+  React.useEffect(() => {
+    if (!isOpen) {
+      setExpandedItemId(null);
+    }
+  }, [isOpen]);
+
+  const handleItemToggleExpand = (itemId: string) => {
+    // 같은 아이템을 클릭하면 닫기, 다른 아이템을 클릭하면 해당 아이템만 열기
+    setExpandedItemId(expandedItemId === itemId ? null : itemId);
+  };
 
   const handleEditClick = (item: JogakItem) => {
     setEditingItem(item);
@@ -137,7 +146,7 @@ export function JogakModal({
               {items.map((item) => (
                 <JogakDetailModal
                   key={item.id}
-                  state={item.completed ? "done" : (openDetailItemId === item.id ? "active" : "default")}
+                  state={item.completed ? "done" : "default"}
                   text={item.text}
                   description={item.content}
                   onClick={() => onItemToggle?.(item.id)}
@@ -145,6 +154,8 @@ export function JogakModal({
                   completedAt={item.completed ? "24.12.15 14:30:00" : undefined}
                   onEdit={() => handleEditClick(item)}
                   onDelete={() => handleDeleteClick(item)}
+                  isExpanded={expandedItemId === item.id}
+                  onToggleExpand={() => handleItemToggleExpand(item.id)}
                 />
               ))}
               <JogakDetailModal state="add-custom" onClick={handleAddClick} />

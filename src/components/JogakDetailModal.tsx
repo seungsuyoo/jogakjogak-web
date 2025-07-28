@@ -14,6 +14,8 @@ interface Props {
   onEdit?: () => void;
   onDelete?: () => void;
   onMemoChange?: (memo: string) => void;
+  onToggleExpand?: () => void;
+  isExpanded?: boolean;
 }
 
 export function JogakDetailModal({
@@ -26,19 +28,29 @@ export function JogakDetailModal({
   description,
   onEdit,
   onDelete,
-  onMemoChange
+  onMemoChange,
+  onToggleExpand,
+  isExpanded: isExpandedProp
 }: Props) {
-  const [isExpanded, setIsExpanded] = useState(state === "active" || state === "active-memo");
+  const [isExpanded, setIsExpanded] = useState(false);
   const [memo, setMemo] = useState("");
 
-  // state prop이 변경될 때 isExpanded 업데이트
+  // props로 받은 isExpanded가 있으면 사용, 없으면 state에 따라 결정
   useEffect(() => {
-    setIsExpanded(state === "active" || state === "active-memo");
-  }, [state]);
+    if (isExpandedProp !== undefined) {
+      setIsExpanded(isExpandedProp);
+    } else {
+      setIsExpanded(state === "active" || state === "active-memo");
+    }
+  }, [state, isExpandedProp]);
 
   const handleToggleExpand = () => {
     if (state !== "add-custom") {
-      setIsExpanded(!isExpanded);
+      if (onToggleExpand) {
+        onToggleExpand();
+      } else {
+        setIsExpanded(!isExpanded);
+      }
     }
   };
 
