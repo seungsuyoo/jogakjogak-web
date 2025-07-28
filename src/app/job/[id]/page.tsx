@@ -20,6 +20,7 @@ import { tokenManager } from "@/utils/auth";
 import { StaticImageData } from "next/image";
 import NotificationModal from "@/components/NotificationModal";
 import Snackbar from "@/components/Snackbar";
+import { DeleteConfirmModal } from "@/components/DeleteConfirmModal";
 
 interface TodoItem {
   checklist_id: number;
@@ -517,8 +518,8 @@ export default function JobDetailPage() {
       });
 
       if (response.ok) {
-        // 삭제 성공 시 홈으로 이동
-        router.push('/');
+        // 삭제 성공 시 대시보드로 이동
+        router.push('/dashboard');
       } else {
         console.error('Failed to delete JD');
         alert('채용공고 삭제에 실패했습니다.');
@@ -801,31 +802,11 @@ export default function JobDetailPage() {
       <Footer />
       
       {/* Delete confirmation modal */}
-      {isDeleting && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modal}>
-            <h3 className={styles.modalTitle}>채용공고 삭제</h3>
-            <p className={styles.modalMessage}>
-              이 채용공고를 삭제하시겠습니까?<br />
-              삭제된 채용공고는 복구할 수 없습니다.
-            </p>
-            <div className={styles.modalButtons}>
-              <button 
-                className={styles.modalCancel}
-                onClick={() => setIsDeleting(false)}
-              >
-                취소
-              </button>
-              <button 
-                className={styles.modalConfirm}
-                onClick={handleDelete}
-              >
-                삭제
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <DeleteConfirmModal
+        isOpen={isDeleting}
+        onClose={() => setIsDeleting(false)}
+        onConfirm={handleDelete}
+      />
       
       {/* Notification Modal */}
       <NotificationModal
