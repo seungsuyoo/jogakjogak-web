@@ -4,12 +4,13 @@
   height: 93px;
   overflow: hidden;
   position: relative;
-  width: 100%;
+  width: calc(100% - 40px);
   max-width: 1560px;
   display: flex;
   align-items: center;
   padding: 0 24px 0 36px;
   box-sizing: border-box;
+  margin: 0 20px;
 }
 
 .frame {
@@ -69,7 +70,7 @@
 /* Responsive adjustments */
 @media (max-width: 1600px) {
   .resumeDesktop {
-    width: calc(100vw - 40px);
+    width: calc(100% - 40px);
     max-width: 1560px;
     margin: 0 auto;
   }
@@ -77,6 +78,21 @@
   .btnInstance {
     left: auto !important;
     right: 32px !important;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1600px) {
+  .resumeDesktop {
+    margin: 0 20px;
+    width: calc(100% - 40px);
+  }
+}
+
+/* PC에서 jobSection과 같은 좌우 margin 적용 */
+@media (min-width: 769px) {
+  .resumeDesktop {
+    margin-left: 20px;
+    margin-right: 20px;
   }
 }
 
