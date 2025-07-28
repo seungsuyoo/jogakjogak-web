@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useReducer } from "react";
+import React, { useReducer, useState, useRef, useEffect } from "react";
 import styles from "./JobList.module.css";
 import { ProgressBar } from "./ProgressBar";
 
@@ -14,6 +14,8 @@ interface Props {
   totalCount?: string | number;
   dDay?: number;
   onClick?: () => void;
+  onApplyComplete?: () => void;
+  onDelete?: () => void;
 }
 
 interface State {
@@ -47,14 +49,35 @@ export function JobList({
   totalCount = "30",
   dDay = 52,
   onClick,
+  onApplyComplete,
+  onDelete,
 }: Props) {
   const [state, dispatch] = useReducer(reducer, {
     state: stateProp,
     originalState: stateProp,
   });
+  const [showMoreMenu, setShowMoreMenu] = useState(false);
+  const moreMenuRef = useRef<HTMLDivElement>(null);
 
   const totalCountNum = typeof totalCount === 'string' ? parseInt(totalCount) : totalCount;
   const completedCountNum = parseInt(completedCount);
+
+  // 외부 클릭 시 메뉴 닫기
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (moreMenuRef.current && !moreMenuRef.current.contains(event.target as Node)) {
+        setShowMoreMenu(false);
+      }
+    };
+
+    if (showMoreMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showMoreMenu]);
 
   return (
     <div
@@ -86,12 +109,46 @@ export function JobList({
                 </div>
               )}
             </div>
-            <div className={styles.iconWrapper}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M12 8C13.1046 8 14 7.10457 14 6C14 4.89543 13.1046 4 12 4C10.8954 4 10 4.89543 10 6C10 7.10457 10.8954 8 12 8Z" fill="#94A2B3"/>
-                <path d="M12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10C10.8954 10 10 10.8954 10 12C10 13.1046 10.8954 14 12 14Z" fill="#94A2B3"/>
-                <path d="M12 20C13.1046 20 14 19.1046 14 18C14 16.8954 13.1046 16 12 16C10.8954 16 10 16.8954 10 18C10 19.1046 10.8954 20 12 20Z" fill="#94A2B3"/>
-              </svg>
+            <div className={styles.iconWrapper} ref={moreMenuRef}>
+              <button 
+                className={styles.moreButton}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowMoreMenu(!showMoreMenu);
+                }}
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 8C13.1046 8 14 7.10457 14 6C14 4.89543 13.1046 4 12 4C10.8954 4 10 4.89543 10 6C10 7.10457 10.8954 8 12 8Z" fill="#94A2B3"/>
+                  <path d="M12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10C10.8954 10 10 10.8954 10 12C10 13.1046 10.8954 14 12 14Z" fill="#94A2B3"/>
+                  <path d="M12 20C13.1046 20 14 19.1046 14 18C14 16.8954 13.1046 16 12 16C10.8954 16 10 16.8954 10 18C10 19.1046 10.8954 20 12 20Z" fill="#94A2B3"/>
+                </svg>
+              </button>
+              
+              {/* More menu dropdown */}
+              {showMoreMenu && (
+                <div className={styles.moreMenu}>
+                  <button 
+                    className={styles.moreMenuItem}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowMoreMenu(false);
+                      onApplyComplete?.();
+                    }}
+                  >
+                    지원 완료
+                  </button>
+                  <button 
+                    className={styles.moreMenuItem}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowMoreMenu(false);
+                      onDelete?.();
+                    }}
+                  >
+                    삭제하기
+                  </button>
+                </div>
+              )}
             </div>
           </div>
           <div className={styles.frame3}>
