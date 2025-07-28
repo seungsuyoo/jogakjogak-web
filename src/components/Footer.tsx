@@ -60,13 +60,13 @@ export default function Footer() {
         <div className={styles.mainContent}>
           {/* Links */}
           <nav className={styles.linkContainer}>
-            <a href="#" className={styles.link}>서비스 소개</a>
+            <a href="/" className={styles.link}>서비스 소개</a>
             <span className={styles.separator}>|</span>
-            <a href="#" className={styles.link}>문의하기</a>
+            <a href="https://www.notion.so/zerobaseschool/FAQ-23018cd7a3e780b9b557c5421fe35fa5" target="_blank" rel="noopener noreferrer" className={styles.link}>문의하기</a>
             <span className={styles.separator}>|</span>
-            <a href="#" className={styles.link}>이용약관</a>
+            <a href="https://www.notion.so/zerobaseschool/23018cd7a3e780f6ab46d62168faa2f5" target="_blank" rel="noopener noreferrer" className={styles.link}>이용약관</a>
             <span className={styles.separator}>|</span>
-            <a href="#" className={styles.link}>개인정보 처리방침</a>
+            <a href="https://zircon-eagle-db5.notion.site/22d02f1ef634808aa79ad41a0f2c3655" target="_blank" rel="noopener noreferrer" className={styles.link}>개인정보 처리방침</a>
           </nav>
 
           {/* Contact and copyright */}
