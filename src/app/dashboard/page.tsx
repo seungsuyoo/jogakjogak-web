@@ -168,7 +168,7 @@ export default function DashboardPage() {
       if (response.ok) {
         setSnackbar({ isOpen: true, message: '지원 완료로 표시되었습니다.', type: 'success' });
         // 목록 새로고침
-        fetchJobs();
+        fetchJdsData();
       } else {
         setSnackbar({ isOpen: true, message: '지원 완료 처리에 실패했습니다.', type: 'error' });
       }
