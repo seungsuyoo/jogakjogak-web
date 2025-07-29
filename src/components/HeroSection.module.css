@@ -40,6 +40,8 @@
   text-align: center;
   color: var(--n-900);
   margin-bottom: 24px;
+  display: flex;
+  gap: 8px;
 }
 
 .description {
@@ -100,6 +102,7 @@
     line-height: var(--title-2-bold-line-height);
     letter-spacing: var(--title-2-bold-letter-spacing);
     margin-bottom: 16px;
+    flex-direction: column;
   }
   
   .description {

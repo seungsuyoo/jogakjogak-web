@@ -37,7 +37,8 @@ export default function HeroSection({ onLoginClick }: HeroSectionProps) {
         <span>막막한 취업 준비, 조각조각이 함께</span>
       </div>
       <h1 className={styles.title}>
-        나의 커리어 조각, 하나씩 완성해요
+          <p>나의 커리어 조각,</p>
+          <p>하나씩 완성해요</p>
       </h1>
       <p className={styles.description}>
         AI가 함께하는 나의 취업 성공 투두 리스트

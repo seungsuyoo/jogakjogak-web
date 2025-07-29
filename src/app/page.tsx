@@ -73,7 +73,7 @@ function HomeContent() {
         image={section2}
         imageAlt="진척도 확인 화면"
         title={<>조각을 채워가며<br />작은 성취를 만들어가세요.</>}
-        description={<>할 일을 진행할 때마다 조각이 채워져요.<br />조각을 완성하면 어느새 최종 합격이 눈앞에 !</>}
+        description={<>할 일을 진행할 때마다 조각이 채워져요.<br />조각을 완성하면 어느새 최종 합격이 눈앞에!</>}
         reversed
       />
 
