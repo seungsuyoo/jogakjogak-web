@@ -10,7 +10,7 @@
   align-items: flex-start;
   gap: 24px;
   padding: 24px 0;
-  max-width: 1580px;
+  max-width: 1570px;
   margin: 0 auto;
   width: 100%;
   box-sizing: border-box;
@@ -29,7 +29,7 @@
 
 .jobSection {
   display: flex;
-  gap: 24px;
+  gap: 20px;
   width: 100%;
   flex-wrap: wrap;
   margin: 0 20px
@@ -38,6 +38,7 @@
 @media (max-width: 768px) {
   .jobSection {
     flex-direction: column;
+    gap: 10px;
   }
 }
 
@@ -64,7 +65,7 @@
 
 .resumeLoading {
   width: calc(100% - 40px);
-  max-width: 1580px;
+  max-width: 1570px;
   margin: 0 20px;
 }
 

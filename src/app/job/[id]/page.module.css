@@ -7,15 +7,16 @@
 .container {
   max-width: 1034px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 16px;
 }
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 8px;
-  height: 48px;
+  height:60px;
+  background-color: #ffffff;
+  padding: 0 16px;
 }
 
 .leftSection {
@@ -24,7 +25,8 @@
 }
 
 .backButton {
-  background-color: var(--n-100);
+  /*background-color: var(--n-100);*/
+  background-color: white;
   border-radius: 16px;
   height: 48px;
   width: 48px;
@@ -73,7 +75,8 @@
 }
 
 .iconButton {
-  background-color: var(--n-100);
+  /*background-color: var(--n-100);*/
+  background-color: white;
   border-radius: 16px;
   height: 48px;
   width: 48px;
@@ -404,7 +407,8 @@
   }
 
   .jobDetailsBottom {
-    gap: 16px;
+    flex-direction: column;
+    gap: 8px;
   }
 }
 

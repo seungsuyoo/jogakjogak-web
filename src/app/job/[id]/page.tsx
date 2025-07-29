@@ -604,84 +604,85 @@ export default function JobDetailPage() {
     <>
       <Header backgroundColor="white" showLogout={true} />
       <main className={styles.main}>
-        <div className={styles.container}>
-          {/* Header with navigation */}
-          <div className={styles.header}>
-            <div className={styles.leftSection}>
-              <button className={styles.backButton} onClick={handleBack}>
-                <Image 
+        <div className={styles.header}>
+          <div className={styles.leftSection}>
+            <button className={styles.backButton} onClick={handleBack}>
+              <Image
                   src={arrowBackIcon}
                   alt="뒤로가기"
                   width={18.17}
                   height={17.69}
-                />
-              </button>
-            </div>
+              />
+            </button>
+          </div>
 
-            <div className={styles.rightSection}>
-              <button 
+          <div className={styles.rightSection}>
+            <button
                 className={styles.actionButton}
                 onClick={() => {
                   if (jdDetail.jdUrl) {
                     window.open(jdDetail.jdUrl, '_blank');
                   }
                 }}
-              >
-                <span className={styles.actionButtonText}>채용공고 보기</span>
-              </button>
+            >
+              <span className={styles.actionButtonText}>채용공고 보기</span>
+            </button>
 
-              <button 
+            <button
                 className={`${styles.iconButton} ${jdDetail.bookmark ? styles.bookmarked : ''}`}
                 onClick={toggleBookmark}
-              >
-                <Image 
+            >
+              <Image
                   src={bookmarkIcon}
                   alt="북마크"
                   width={21.33}
                   height={24}
                   style={{ opacity: jdDetail.bookmark ? 1 : 0.7 }}
-                />
-              </button>
+              />
+            </button>
 
-              <div ref={moreMenuRef} style={{ position: 'relative' }}>
-                <button 
+            <div ref={moreMenuRef} style={{ position: 'relative' }}>
+              <button
                   className={styles.iconButton}
                   onClick={() => setShowMoreMenu(!showMoreMenu)}
-                >
-                  <Image 
+              >
+                <Image
                     src={moreIcon}
                     alt="더보기"
                     width={21.33}
                     height={5.33}
-                  />
-                </button>
-                
-                {/* More menu dropdown */}
-                {showMoreMenu && (
+                />
+              </button>
+
+              {/* More menu dropdown */}
+              {showMoreMenu && (
                   <div className={styles.moreMenu}>
-                    <button 
-                      className={styles.moreMenuItem}
-                      onClick={() => {
-                        setShowMoreMenu(false);
-                        handleApplyComplete();
-                      }}
+                    <button
+                        className={styles.moreMenuItem}
+                        onClick={() => {
+                          setShowMoreMenu(false);
+                          handleApplyComplete();
+                        }}
                     >
                       지원 완료
                     </button>
-                    <button 
-                      className={styles.moreMenuItem}
-                      onClick={() => {
-                        setShowMoreMenu(false);
-                        setIsDeleting(true);
-                      }}
+                    <button
+                        className={styles.moreMenuItem}
+                        onClick={() => {
+                          setShowMoreMenu(false);
+                          setIsDeleting(true);
+                        }}
                     >
                       삭제하기
                     </button>
                   </div>
-                )}
-              </div>
+              )}
             </div>
           </div>
+        </div>
+        <div className={styles.container}>
+          {/* Header with navigation */}
+
 
           {/* Job details */}
           <div className={styles.jobDetails}>
