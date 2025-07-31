@@ -40,10 +40,6 @@ export default function CreateJobPage() {
       alert("채용공고 내용을 입력해주세요.");
       return;
     }
-    if (!deadline) {
-      alert("마감일을 설정해주세요.");
-      return;
-    }
 
     setIsSubmitting(true);
     try {
