@@ -64,7 +64,7 @@ export default function CreateJobPage() {
       const data = await response.json();
 
       if (response.ok) {
-        setNextJdId(data.data.jdId);
+        setNextJdId(data.data.jd_id);
         setIsComplete(true);
         // LoadingModal의 onCompleteAnimationEnd에서 페이지 이동 처리
       } else {
