@@ -17,11 +17,11 @@ export async function POST(request: NextRequest) {
     const { title, companyName, job, content, link, endDate } = body;
 
     // 필수 필드 검증
-    if (!title || !companyName || !job || !content || !endDate) {
+    if (!title || !companyName || !job || !content) {
       return NextResponse.json(
         { 
           code: 400, 
-          message: 'Missing required fields: title, companyName, job, content, endDate are required' 
+          message: 'Missing required fields: title, companyName, job, content are required' 
         },
         { status: 400 }
       );
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
           job,
           content,
           jdUrl: link || "",  // link → jdUrl, 빈 문자열 기본값
-          endedAt: `${endDate}T23:59:59`  // DateTime 형식으로 변환
+          ...(endDate && { endedAt: `${endDate}T23:59:59` })  // endDate가 있을 때만 추가
         }),
       }
     );
