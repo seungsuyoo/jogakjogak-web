@@ -56,7 +56,7 @@ export default function Footer() {
         <div className={styles.mainContent}>
           {/* Links */}
           <nav className={styles.linkContainer}>
-            <a href="/" className={styles.link}>서비스 소개</a>
+            <a href="/?intro=true" className={styles.link}>서비스 소개</a>
             <span className={styles.separator}>|</span>
             <a href="https://www.notion.so/zerobaseschool/FAQ-23018cd7a3e780b9b557c5421fe35fa5" target="_blank" rel="noopener noreferrer" className={styles.link}>문의하기</a>
             <span className={styles.separator}>|</span>

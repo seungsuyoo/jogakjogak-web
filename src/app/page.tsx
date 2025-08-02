@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, Suspense, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { tokenManager } from "@/utils/auth";
 import styles from "./page.module.css";
 import Header from "@/components/Header";
@@ -15,8 +15,10 @@ import section3 from "@/assets/images/section3.png";
 
 function HomeContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const showIntro = searchParams.get('intro') === 'true';
 
   useEffect(() => {
     // 로그인 상태 확인
@@ -55,7 +57,18 @@ function HomeContent() {
     }
   }, [searchParams]);
 
-  // 로그인 상태와 관계없이 랜딩 페이지 표시
+  // 로그인 상태에서 intro 파라미터가 없으면 대시보드로 리다이렉트
+  useEffect(() => {
+    if (isAuthenticated && !showIntro) {
+      router.push('/dashboard');
+    }
+  }, [isAuthenticated, showIntro, router]);
+
+  // intro 파라미터가 있거나 로그인하지 않은 경우 랜딩 페이지 표시
+  if (isAuthenticated === null) {
+    return null; // 로딩 중
+  }
+
   return (
     <div className={styles.container}>
       <Header backgroundColor="transparent" showLogout={!!isAuthenticated} />
