@@ -44,6 +44,8 @@ export default function DashboardPage() {
   const [showNoResumeSnackbar, setShowNoResumeSnackbar] = useState(false);
   const [deletingJobId, setDeletingJobId] = useState<number | null>(null);
   const [snackbar, setSnackbar] = useState({ isOpen: false, message: '', type: 'success' as 'success' | 'error' | 'info' });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12;
 
   useEffect(() => {
     // 로그인 상태 확인
@@ -219,24 +221,64 @@ export default function DashboardPage() {
           />
           
           <div className={styles.jobSection}>
-            <JobAdd hasResume={!!resume} onNoResumeClick={handleNoResumeClick} />
+            {currentPage === 1 && (
+              <JobAdd hasResume={!!resume} onNoResumeClick={handleNoResumeClick} />
+            )}
             
             {jds.length > 0 && (
-              jds.map((jd) => (
-                <JobList
-                  key={jd.jd_id}
-                  title={jd.title}
-                  company={jd.companyName}
-                  registerDate={formatDate(jd.createdAt)}
-                  state="default"
-                  completedCount={String(jd.completed_pieces)}
-                  totalCount={String(jd.total_pieces)}
-                  dDay={calculateDDay(jd.endedAt)}
-                  onClick={() => handleJobClick(jd.jd_id)}
-                  onApplyComplete={() => handleApplyComplete(jd.jd_id)}
-                  onDelete={() => setDeletingJobId(jd.jd_id)}
-                />
-              ))
+              <>
+                {(() => {
+                  const startIndex = currentPage === 1 ? 0 : (currentPage - 1) * itemsPerPage - 1;
+                  const endIndex = currentPage === 1 ? itemsPerPage - 1 : startIndex + itemsPerPage;
+                  
+                  return jds
+                    .slice(startIndex, endIndex)
+                    .map((jd) => (
+                    <JobList
+                      key={jd.jd_id}
+                      title={jd.title}
+                      company={jd.companyName}
+                      registerDate={formatDate(jd.createdAt)}
+                      state="default"
+                      completedCount={String(jd.completed_pieces)}
+                      totalCount={String(jd.total_pieces)}
+                      dDay={calculateDDay(jd.endedAt)}
+                      onClick={() => handleJobClick(jd.jd_id)}
+                      onApplyComplete={() => handleApplyComplete(jd.jd_id)}
+                      onDelete={() => setDeletingJobId(jd.jd_id)}
+                    />
+                  ));
+                })()}
+                
+                {/* 페이지네이션 버튼 */}
+                {(() => {
+                  const totalItems = jds.length + 1; // +1 for JobAdd button on first page
+                  const hasNextPage = currentPage === 1 
+                    ? totalItems > itemsPerPage - 1
+                    : jds.length > (currentPage - 1) * itemsPerPage - 1;
+                    
+                  return (totalItems > itemsPerPage || currentPage > 1) && (
+                  <div className={styles.pagination}>
+                    {currentPage > 1 && (
+                      <button
+                        className={styles.paginationButton}
+                        onClick={() => setCurrentPage(currentPage - 1)}
+                      >
+                        이전
+                      </button>
+                    )}
+                    {hasNextPage && (
+                      <button
+                        className={`${styles.paginationButton} ${styles.nextButton}`}
+                        onClick={() => setCurrentPage(currentPage + 1)}
+                      >
+                        다음
+                      </button>
+                    )}
+                  </div>
+                  );
+                })()}
+              </>
             )}
           </div>
         </div>
