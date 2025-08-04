@@ -79,7 +79,7 @@ function HomeContent() {
         image={section1}
         imageAlt="조각조각 서비스 화면"
         title={<>이력서와 채용 공고로<br />지금 할 일을 알 수 있어요.</>}
-        description={<>동록한 이력서와 관심 채용 공고를 비교 분석해,<br />지금 보완해야 할 항목을 AI가 자동으로 정리해 드려요.</>}
+        description={<>등록한 이력서와 관심 채용 공고를 비교 분석해,<br />지금 보완해야 할 항목을 AI가 자동으로 정리해 드려요.</>}
       />
 
       <FeatureSection
