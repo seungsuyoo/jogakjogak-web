@@ -71,20 +71,18 @@ export default function DashboardPage() {
   // 로그인 상태일 때 데이터 불러오기
   useEffect(() => {
     if (isAuthenticated) {
-      const sort = 'createdAt';
-      const direction = sortOrder === 'latest' ? 'DESC' : 'ASC';
-      fetchJdsData(sort, direction);
+      const sort = sortOrder === 'latest' ? 'createdAt,desc' : 'createdAt,asc';
+      fetchJdsData(sort);
     }
   }, [isAuthenticated, sortOrder]);
 
-  const fetchJdsData = async (sort?: string, direction?: string) => {
+  const fetchJdsData = async (sort?: string) => {
     try {
       const accessToken = tokenManager.getAccessToken();
       const queryParams = new URLSearchParams();
       
-      if (sort && direction) {
+      if (sort) {
         queryParams.append('sort', sort);
-        queryParams.append('direction', direction);
       }
       
       const url = `/api/jds${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
@@ -152,9 +150,8 @@ export default function DashboardPage() {
       if (response.ok) {
         setSnackbar({ isOpen: true, message: '채용공고가 삭제되었습니다.', type: 'success' });
         // 목록 새로고침
-        const sort = 'createdAt';
-        const direction = sortOrder === 'latest' ? 'DESC' : 'ASC';
-        fetchJdsData(sort, direction);
+        const sort = sortOrder === 'latest' ? 'createdAt,desc' : 'createdAt,asc';
+        fetchJdsData(sort);
         setDeletingJobId(null);
       } else {
         setSnackbar({ isOpen: true, message: '채용공고 삭제에 실패했습니다.', type: 'error' });
@@ -183,9 +180,8 @@ export default function DashboardPage() {
       if (response.ok) {
         setSnackbar({ isOpen: true, message: '지원 완료로 표시되었습니다.', type: 'success' });
         // 목록 새로고침
-        const sort = 'createdAt';
-        const direction = sortOrder === 'latest' ? 'DESC' : 'ASC';
-        fetchJdsData(sort, direction);
+        const sort = sortOrder === 'latest' ? 'createdAt,desc' : 'createdAt,asc';
+        fetchJdsData(sort);
       } else {
         setSnackbar({ isOpen: true, message: '지원 완료 처리에 실패했습니다.', type: 'error' });
       }
