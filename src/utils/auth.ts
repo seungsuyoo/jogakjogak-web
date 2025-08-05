@@ -10,12 +10,16 @@ export const tokenManager = {
   setAccessToken: (token: string) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('access_token', token);
+      // 쿠키에도 저장 (middleware에서 접근 가능하도록)
+      document.cookie = `accessToken=${token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
     }
   },
 
   removeAccessToken: () => {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('access_token');
+      // 쿠키도 제거
+      document.cookie = 'accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT';
     }
   },
 

@@ -24,6 +24,12 @@ function HomeContent() {
     // 로그인 상태 확인
     const checkAuth = () => {
       const token = tokenManager.getAccessToken();
+      
+      // 기존 토큰이 있지만 쿠키에 없는 경우 마이그레이션
+      if (token && !document.cookie.includes('accessToken=')) {
+        tokenManager.setAccessToken(token); // 쿠키에도 저장
+      }
+      
       setIsAuthenticated(!!token);
     };
 
@@ -57,14 +63,7 @@ function HomeContent() {
     }
   }, [searchParams]);
 
-  // 로그인 상태에서 intro 파라미터가 없으면 대시보드로 리다이렉트
-  useEffect(() => {
-    if (isAuthenticated && !showIntro) {
-      router.push('/dashboard');
-    }
-  }, [isAuthenticated, showIntro, router]);
-
-  // intro 파라미터가 있거나 로그인하지 않은 경우 랜딩 페이지 표시
+  // 로딩 중인 경우만 처리 (리다이렉트는 middleware에서 처리)
   if (isAuthenticated === null) {
     return null; // 로딩 중
   }
