@@ -46,6 +46,7 @@ export default function DashboardPage() {
   const [snackbar, setSnackbar] = useState({ isOpen: false, message: '', type: 'success' as 'success' | 'error' | 'info' });
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
+  const [sortOrder, setSortOrder] = useState<'latest' | 'oldest'>('latest');
 
   useEffect(() => {
     // 로그인 상태 확인
@@ -70,14 +71,24 @@ export default function DashboardPage() {
   // 로그인 상태일 때 데이터 불러오기
   useEffect(() => {
     if (isAuthenticated) {
-      fetchJdsData();
+      const sort = 'createdAt';
+      const direction = sortOrder === 'latest' ? 'DESC' : 'ASC';
+      fetchJdsData(sort, direction);
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, sortOrder]);
 
-  const fetchJdsData = async () => {
+  const fetchJdsData = async (sort?: string, direction?: string) => {
     try {
       const accessToken = tokenManager.getAccessToken();
-      const response = await fetch('/api/jds', {
+      const queryParams = new URLSearchParams();
+      
+      if (sort && direction) {
+        queryParams.append('sort', sort);
+        queryParams.append('direction', direction);
+      }
+      
+      const url = `/api/jds${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      const response = await fetch(url, {
         headers: {
           'Authorization': `Bearer ${accessToken}`
         }
@@ -141,7 +152,9 @@ export default function DashboardPage() {
       if (response.ok) {
         setSnackbar({ isOpen: true, message: '채용공고가 삭제되었습니다.', type: 'success' });
         // 목록 새로고침
-        fetchJdsData();
+        const sort = 'createdAt';
+        const direction = sortOrder === 'latest' ? 'DESC' : 'ASC';
+        fetchJdsData(sort, direction);
         setDeletingJobId(null);
       } else {
         setSnackbar({ isOpen: true, message: '채용공고 삭제에 실패했습니다.', type: 'error' });
@@ -170,7 +183,9 @@ export default function DashboardPage() {
       if (response.ok) {
         setSnackbar({ isOpen: true, message: '지원 완료로 표시되었습니다.', type: 'success' });
         // 목록 새로고침
-        fetchJdsData();
+        const sort = 'createdAt';
+        const direction = sortOrder === 'latest' ? 'DESC' : 'ASC';
+        fetchJdsData(sort, direction);
       } else {
         setSnackbar({ isOpen: true, message: '지원 완료 처리에 실패했습니다.', type: 'error' });
       }
@@ -219,6 +234,20 @@ export default function DashboardPage() {
             resumeTitle={resume?.title}
             resumeUpdatedAt={resume?.updatedAt}
           />
+          
+          {/* 정렬 드롭다운 */}
+          <div className={styles.sortContainer}>
+            <div className={styles.sortDropdown}>
+              <select 
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value as 'latest' | 'oldest')}
+                className={styles.sortSelect}
+              >
+                <option value="latest">최신순</option>
+                <option value="oldest">오래된 순</option>
+              </select>
+            </div>
+          </div>
           
           <div className={styles.jobSection}>
             {currentPage === 1 && (
