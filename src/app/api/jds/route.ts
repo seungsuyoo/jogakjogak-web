@@ -17,15 +17,15 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const page = searchParams.get('page') || '0';
     const size = searchParams.get('size') || '11';
-    const sort = searchParams.get('sort') || 'createdAt';
-    const direction = searchParams.get('direction') || 'DESC';
+    const sort = searchParams.get('sort') || 'createdAt,desc';
 
-    const queryString = new URLSearchParams({
+    const queryParams = new URLSearchParams({
       page,
       size,
-      sort,
-      direction
-    }).toString();
+      sort
+    });
+
+    const queryString = queryParams.toString();
 
     // 백엔드 서버로 요청
     const response = await fetch(
