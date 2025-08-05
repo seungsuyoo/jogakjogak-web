@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, Suspense, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { tokenManager } from "@/utils/auth";
 import styles from "./page.module.css";
 import Header from "@/components/Header";
@@ -15,10 +15,8 @@ import section3 from "@/assets/images/section3.png";
 
 function HomeContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const showIntro = searchParams.get('intro') === 'true';
 
   useEffect(() => {
     // 로그인 상태 확인
